@@ -1,0 +1,21 @@
+{
+    "version": "0.2",
+    "language": "en,uk,ru,de",
+    "ignorePaths": [],
+    "dictionaryDefinitions": [],
+    "dictionaries": [],
+    "words": [
+        "arrowParens",
+        "genversion",
+        "gramjs",
+        "localstorage",
+        "MTProto",
+        "NOSONAR",
+        "preversion",
+        "sonarjs",
+        "strftime",
+        "Voronov"
+    ],
+    "ignoreWords": [],
+    "import": []
+}

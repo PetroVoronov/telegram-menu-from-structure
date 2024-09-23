@@ -1,0 +1,47 @@
+{
+  "name": "telegram-menu-from-structure",
+  "version": "1.0.0",
+  "description": "There is a Telegram menu generation and processing module based on structured data",
+  "main": "dist/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "eslint --fix .",
+    "lint-report": "eslint .",
+    "build": "babel src --out-dir dist",
+    "prepublishOnly": "npm run build"
+  },
+  "keywords": [
+    "telegram",
+    "menu",
+    "structure",
+    "generation"
+  ],
+  "author": "Petro Voronov <petro.voronov@gmail.com>",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/PetroVoronov/telegram-menu-from-structure.git"
+  },
+  "bugs": {
+    "url": "https://github.com/PetroVoronov/telegram-menu-from-structure/issues"
+  },
+  "homepage": "https://github.com/PetroVoronov/telegram-menu-from-structure#readme",
+  "license": "MIT",
+  "files": [
+    "dist",
+    "CHANGELOG.md"
+  ],
+  "dependencies": {
+    "json-stringify-safe": "^5.0.1"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.25.6",
+    "@babel/core": "^7.25.2",
+    "@babel/eslint-parser": "^7.25.1",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-sonarjs": "^2.0.2",
+    "globals": "^15.9.0"
+  },
+  "engines": {
+    "node": ">= 16.0.0"
+  }
+}
