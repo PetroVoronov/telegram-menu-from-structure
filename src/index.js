@@ -70,11 +70,11 @@ class MenuItemRoot extends MenuItem {
   }
 
   async init(
-    {makeButton, sendMessage, editMessage, deleteMessage, sendMessageAsync, editMessageAsync, deleteMessageAsync, logLevel = 'info', logger = null, i18n = null}
+    {makeButton, sendMessage, editMessage, deleteMessage, sendMessageAsync, editMessageAsync, deleteMessageAsync, logLevel, logger = null, i18n = null}
   ) {
     if (this.setLogger(logger)) {
       this.log('debug', 'Logger is set to external logger');
-    } else if (this.setLogger(new SimpleLogger(logLevel))) {
+    } else if (this.setLogger(new SimpleLogger(logLevel || 'info'))) {
       this.log('debug', 'Logger is set to SimpleLogger');
     } else {
       this.log('error', 'Logger is not set');
