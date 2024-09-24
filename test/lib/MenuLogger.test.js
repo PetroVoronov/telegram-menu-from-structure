@@ -1,4 +1,4 @@
-const { SimpleLogger } = require('../src/lib/MenuLogger');
+const { SimpleLogger } = require('../../src/lib/MenuLogger');
 
 describe('SimpleLogger', () => {
     let logger;

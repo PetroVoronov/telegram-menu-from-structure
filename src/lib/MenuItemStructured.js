@@ -583,7 +583,7 @@ class MenuItemStructured extends MenuItem {
         let index = 0;
         if (this.structure.plain === true && typeof this.structure.itemContent.value === 'object') {
           await this.appendNested(null, ['value'], dataItem, index);
-        } else {
+        } else if (this.structure.itemContent !== undefined && this.structure.itemContent !== null) {
           for (const rowId of Object.keys(this.structure.itemContent)) {
             if (this.structure.itemContent[rowId].type !== 'object') {
               index = await this.appendNested(null, [rowId], dataItem[rowId], index);
