@@ -42,16 +42,16 @@ describe('SimpleLogger', () => {
         expect(consoleSpy).toHaveBeenCalledWith('DEBUG: This is a debug message');
     });
 
-    test('should change log level using setLogLevel', () => {
+    test('should change log level using setLevel', () => {
         logger = new SimpleLogger('error');
-        logger.setLogLevel('info');
+        logger.setLevel('info');
         logger.info('This is an info message');
         expect(consoleSpy).toHaveBeenCalledWith('INFO: This is an info message');
     });
 
     test('should not change log level to an invalid level', () => {
         logger = new SimpleLogger('error');
-        logger.setLogLevel('invalid');
+        logger.setLevel('invalid');
         logger.info('This is an info message');
         expect(consoleSpy).not.toHaveBeenCalled();
     });

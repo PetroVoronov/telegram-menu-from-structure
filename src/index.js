@@ -69,10 +69,19 @@ class MenuItemRoot extends MenuItem {
     }
   }
 
-  async init(
-    {makeButton, sendMessage, editMessage, deleteMessage, sendMessageAsync, editMessageAsync, deleteMessageAsync, logLevel, logger = null, i18n = null}
-  ) {
-    if (this.setLogger(logger)) {
+  async init({
+    makeButton,
+    sendMessage,
+    editMessage,
+    deleteMessage,
+    sendMessageAsync,
+    editMessageAsync,
+    deleteMessageAsync,
+    logLevel = '',
+    logger = null,
+    i18n = null,
+  }) {
+    if (this.setLogger(logger, logLevel)) {
       this.log('debug', 'Logger is set to external logger');
     } else if (this.setLogger(new SimpleLogger(logLevel || 'info'))) {
       this.log('debug', 'Logger is set to SimpleLogger');
@@ -118,7 +127,6 @@ class MenuItemRoot extends MenuItem {
   get version() {
     return pkgVersion;
   }
-
 }
 
 module.exports = {

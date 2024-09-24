@@ -10,7 +10,7 @@ class SimpleLogger {
     this.level = level;
   }
 
-  setLogLevel(level) {
+  setLevel(level) {
     if (SimpleLogger.acceptableLevel(level)) {
       this.level = level;
     }

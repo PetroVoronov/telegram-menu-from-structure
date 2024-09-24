@@ -3,6 +3,7 @@
 
 const stringify = require('json-stringify-safe');
 const emojiRegex = require('emoji-regex');
+const {SimpleLogger} = require('./MenuLogger');
 
 const menuDefaults = {
   columnsMaxCount: {
@@ -123,6 +124,7 @@ class MenuItem {
   holder = null;
   nested = new Array();
   commands = {};
+  logLevel = '';
 
   columnsMaxCount = menuDefaults.columnsMaxCount.default;
   textSummaryMaxLength = menuDefaults.textSummaryMaxLength.default;
@@ -230,7 +232,7 @@ class MenuItem {
    * @param {object} logger - Logger
    * @returns {boolean} - True if logger is set, false otherwise
    **/
-  setLogger(logger) {
+  setLogger(logger, logLevel = '') {
     if (
       logger &&
       typeof logger === 'object' &&
@@ -240,6 +242,9 @@ class MenuItem {
       typeof logger.info === 'function'
     ) {
       this.#logger = logger;
+      if (SimpleLogger.acceptableLevel(logLevel)) {
+        this.logLevel = logLevel;
+      }
       return true;
     } else {
       return false;
@@ -289,11 +294,13 @@ class MenuItem {
   }
 
   log(level = 'info', ...message) {
-    if (typeof this.#logger === 'object' && typeof this.#logger[level] === 'function') {
-      if (message.length < 2 || typeof message[0] !== 'string' || !message[0].startsWith(`${this.constructor.name}`)) {
-        message.unshift(`${this.constructor.name}.${this.getCurrentMethodName()}{'${this.command}'}| `);
+    if (this.logLevel === '' || SimpleLogger.canLog(level, this.logLevel)) {
+      if (typeof this.#logger === 'object' && typeof this.#logger[level] === 'function') {
+        if (message.length < 2 || typeof message[0] !== 'string' || !message[0].startsWith(`${this.constructor.name}`)) {
+          message.unshift(`${this.constructor.name}.${this.getCurrentMethodName()}{'${this.command}'}| `);
+        }
+        this.#logger[level](message.join(''));
       }
-      this.#logger[level](message.join(''));
     }
   }
 
@@ -361,6 +368,12 @@ class MenuItem {
     if (this.setLogger(this.holder.logger)) {
       this.nested.forEach((item) => {
         item.setLogger(this.logger);
+      });
+    }
+    if (SimpleLogger.acceptableLevel(this.holder.logLevel)) {
+      this.logLevel = this.holder.logLevel;
+      this.nested.forEach((item) => {
+        item.logLevel = this.logLevel;
       });
     }
     if (this.holder.i18n !== null) {
@@ -844,10 +857,10 @@ class MenuItem {
       this.log('debug', `command: ${command} is not target! Commands: ${stringify(Object.keys(root?.commands))}`);
       let targetCommand = command;
       if (command.startsWith(MenuItem.cmdCancel)) {
-        targetCommand =  targetCommand.replace(MenuItem.cmdCancel, '');
-        root.processInputForCommand= '';
+        targetCommand = targetCommand.replace(MenuItem.cmdCancel, '');
+        root.processInputForCommand = '';
       } else if (root.processInputForCommand) {
-        targetCommand =  root.processInputForCommand;
+        targetCommand = root.processInputForCommand;
       }
       const target = await root.getByCommand(targetCommand, userId);
       this.log('debug', `target: ${stringify(target?.command)}`);
