@@ -1,5 +1,22 @@
 # Changelog
 
+## [1.0.2](https://github.com/PetroVoronov/telegram-menu-from-structure/compare/v1.0.1...v1.0.2) (2024-09-24)
+
+
+### Continuous Integration
+
+* Add simple and basic tests for the index.js ([5feab11](https://github.com/PetroVoronov/telegram-menu-from-structure/commit/5feab11bcb45d47e887e3ab3e71b89a8482290b2))
+
+
+### Documentation
+
+* Update README.md with improved formatting and very basic additional information ([f8c1f0e](https://github.com/PetroVoronov/telegram-menu-from-structure/commit/f8c1f0ef69995731ccac56047583950ef6611770))
+
+
+### Bug Fixes
+
+* Refactor MenuItemStructured to handle empty nested items in the structure ([5feab11](https://github.com/PetroVoronov/telegram-menu-from-structure/commit/5feab11bcb45d47e887e3ab3e71b89a8482290b2))
+
 ## [1.0.1](https://github.com/PetroVoronov/telegram-menu-from-structure/compare/v1.0.0...v1.0.1) (2024-09-24)
 
 
