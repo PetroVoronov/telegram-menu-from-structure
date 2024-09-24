@@ -131,3 +131,6 @@ dist
 
 #vscode workspace
 *.code-workspace
+
+#examples
+examples/**/package-lock.json

@@ -1,0 +1,7 @@
+{
+    "name": "simple-no-telegram-console-mode",
+    "dependencies": {
+        "readline-sync": "^1.4.10",
+        "telegram-menu-from-structure": "^1.0.2"
+    }
+}
