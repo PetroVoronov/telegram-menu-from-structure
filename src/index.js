@@ -70,14 +70,11 @@ class MenuItemRoot extends MenuItem {
   }
 
   async init(
-    {makeButton, sendMessage, editMessage, deleteMessage, sendMessageAsync, editMessageAsync, deleteMessageAsync},
-    level = 'info',
-    logger = null,
-    i18n = null,
+    {makeButton, sendMessage, editMessage, deleteMessage, sendMessageAsync, editMessageAsync, deleteMessageAsync, logLevel = 'info', logger = null, i18n = null}
   ) {
     if (this.setLogger(logger)) {
       this.log('debug', 'Logger is set to external logger');
-    } else if (this.setLogger(new SimpleLogger(level))) {
+    } else if (this.setLogger(new SimpleLogger(logLevel))) {
       this.log('debug', 'Logger is set to SimpleLogger');
     } else {
       this.log('error', 'Logger is not set');
@@ -86,24 +83,31 @@ class MenuItemRoot extends MenuItem {
     this.config(this.rootStructure.options);
     if (typeof makeButton === 'function') {
       this.#makeButton = makeButton;
+      this.log('debug', 'makeButton is set');
     }
     if (typeof sendMessage === 'function') {
       this.#sendMessage = sendMessage;
+      this.log('debug', 'sendMessage is set');
     }
     if (typeof editMessage === 'function') {
       this.#editMessage = editMessage;
+      this.log('debug', 'editMessage is set');
     }
     if (typeof deleteMessage === 'function') {
       this.#deleteMessage = deleteMessage;
+      this.log('debug', 'deleteMessage is set');
     }
     if (typeof sendMessageAsync === 'function') {
       this.#sendMessageAsync = sendMessageAsync;
+      this.log('debug', 'sendMessageAsync is set');
     }
     if (typeof editMessageAsync === 'function') {
       this.#editMessageAsync = editMessageAsync;
+      this.log('debug', 'editMessageAsync is set');
     }
     if (typeof deleteMessageAsync === 'function') {
       this.#deleteMessageAsync = deleteMessageAsync;
+      this.log('debug', 'deleteMessageAsync is set');
     }
     for (const key of Object.keys(this.rootStructure.structure)) {
       const item = this.rootStructure.structure[key];
