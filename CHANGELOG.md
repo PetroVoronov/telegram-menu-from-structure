@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.0](https://github.com/PetroVoronov/telegram-menu-from-structure/compare/v1.0.3...v1.1.0) (2024-09-25)
+
+
+### Features
+
+* Change list of parameters for external functions `sendMessage` and `editMessage` to make them more universal and compatible with more Telegram user or bot libraries. ([1ee3ac4](https://github.com/PetroVoronov/telegram-menu-from-structure/commit/1ee3ac4134da493180115c2fce17ca14c74b0598))
+
 ## [1.0.3](https://github.com/PetroVoronov/telegram-menu-from-structure/compare/v1.0.2...v1.0.3) (2024-09-25)
 
 
