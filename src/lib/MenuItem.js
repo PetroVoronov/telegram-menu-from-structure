@@ -458,7 +458,7 @@ class MenuItem {
    **/
   removeValue(key, chatId = null) {
     if (this.isRoot === true) {
-      this.#removeValue(key, MenuItem.getValueKey(key, chatId));
+      this.#removeValue(MenuItem.getValueKey(key, chatId));
     } else {
       const root = this.getRoot();
       if (root) root.removeValue(key, chatId);
