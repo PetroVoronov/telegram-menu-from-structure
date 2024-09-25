@@ -1,5 +1,16 @@
 # Changelog
 
+## [1.0.3](https://github.com/PetroVoronov/telegram-menu-from-structure/compare/v1.0.2...v1.0.3) (2024-09-25)
+
+
+### Code Refactoring
+
+* **examples:** Finalize menu.js (simple-no-telegram-console-mode) and add support of local Menu module usage (`--local` command-line option) ([1afc0b2](https://github.com/PetroVoronov/telegram-menu-from-structure/commit/1afc0b2c92116f94e374e729badfbf4c4635a8bd))
+* **examples:** Prepare pre-version of console example without interaction with Telegram ([cfcf0ec](https://github.com/PetroVoronov/telegram-menu-from-structure/commit/cfcf0ec14f2d495f74ad8c28a8ab5ee03ed7aab5))
+* Fix working of the Menu without the external i18n object. ([1afc0b2](https://github.com/PetroVoronov/telegram-menu-from-structure/commit/1afc0b2c92116f94e374e729badfbf4c4635a8bd))
+* **MenuButton:** Update default prompts to the simple template strings, i.e. using the %s instead of {{named_params}} ([1afc0b2](https://github.com/PetroVoronov/telegram-menu-from-structure/commit/1afc0b2c92116f94e374e729badfbf4c4635a8bd))
+* **MenuItem:** i18nTranslate to use util.format to convert usual string or template strings with params to string, when external i18n object is not presented ([1afc0b2](https://github.com/PetroVoronov/telegram-menu-from-structure/commit/1afc0b2c92116f94e374e729badfbf4c4635a8bd))
+
 ## [1.0.2](https://github.com/PetroVoronov/telegram-menu-from-structure/compare/v1.0.1...v1.0.2) (2024-09-24)
 
 
