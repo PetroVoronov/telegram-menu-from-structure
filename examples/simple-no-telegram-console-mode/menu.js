@@ -149,7 +149,7 @@ let lastMessageObject = null;
 const buttons = [];
 
 function printMessage(messageObject) {
-  console.log(` text: ${formatMenuText(typeof messageObject.message === 'string' ? messageObject.message : messageObject.text)}`);
+  console.log(` text: ${formatMenuText(messageObject.message)}`);
   console.log(` buttons: `);
   messageObject.buttons.forEach((buttonsRow) => {
     console.log(
@@ -192,17 +192,17 @@ async function pressButton(label) {
 async function example() {
   await menuRoot.init({
     makeButton: (label, command) => ({label, command}),
-    sendMessage: (peerId, messageObject) => {
+    sendMessage: (peerId, messageText, messageButtons) => {
       console.log(`Sending message to ${peerId}:`);
-      printMessage(messageObject);
-      lastMessageObject = messageObject;
+      lastMessageObject = {message: messageText, buttons: messageButtons};
+      printMessage(lastMessageObject);
       botMessageId++;
-      return {id: botMessageId};
+      return botMessageId;
     },
-    editMessage: (peerId, messageObject) => {
-      console.log(`Message with id ${messageObject.message} to ${peerId} is edited:`);
-      printMessage(messageObject);
-      lastMessageObject = messageObject;
+    editMessage: (peerId, messageId, messageText, messageButtons) => {
+      console.log(`Message with id ${messageId} to ${peerId} is edited:`);
+      lastMessageObject = {message: messageText, buttons: messageButtons};
+      printMessage(lastMessageObject);
       return true;
     },
     deleteMessage: (peer, menuMessageId) => {

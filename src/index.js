@@ -39,21 +39,21 @@ class MenuItemRoot extends MenuItem {
     }
   }
 
-  async sendMessage(peerId, messageObject) {
+  async sendMessage(peerId, messageText, messageButtons) {
     if (typeof this.#sendMessage === 'function') {
-      return this.#sendMessage(peerId, messageObject);
+      return this.#sendMessage(peerId, messageText, messageButtons);
     } else if (typeof this.#sendMessageAsync === 'function') {
-      return await this.#sendMessageAsync(peerId, messageObject);
+      return await this.#sendMessageAsync(peerId, messageText, messageButtons);
     } else {
       throw new Error('sendMessage is not set');
     }
   }
 
-  async editMessage(peerId, messageObject) {
+  async editMessage(peerId, messageId, messageText, messageButtons) {
     if (typeof this.#editMessage === 'function') {
-      return this.#editMessage(peerId, messageObject);
+      return this.#editMessage(peerId, messageId, messageText, messageButtons);
     } else if (typeof this.#editMessageAsync === 'function') {
-      return await this.#editMessageAsync(peerId, messageObject);
+      return await this.#editMessageAsync(peerId, messageId, messageText, messageButtons);
     } else {
       throw new Error('editMessage is not set');
     }

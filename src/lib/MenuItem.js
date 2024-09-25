@@ -700,13 +700,14 @@ class MenuItem {
   /**
    * Send message
    * @param {string} peerId - Peer Id
-   * @param {object} messageObject - Message object
+   * @param {string} messageText - Message text
+   * @param {any[]} messageButtons - Message buttons
    * @returns {object} - Result object
    **/
-  async sendMessage(peerId, messageObject) {
+  async sendMessage(peerId, messageText, messageButtons) {
     const root = this.getRoot();
     if (root) {
-      return await root.sendMessage(peerId, messageObject);
+      return await root.sendMessage(peerId, messageText, messageButtons);
     } else {
       throw new Error('Root is not found!');
     }
@@ -715,13 +716,15 @@ class MenuItem {
   /**
    * Edit message
    * @param {string} peerId - Peer Id
-   * @param {object} messageObject - Message object
+   * @param {number} messageId - Message Id
+   * @param {string} messageText - Message text
+   * @param {any[]} messageButtons - Message buttons
    * @returns {object} - Result object
    **/
-  async editMessage(peerId, messageObject) {
+  async editMessage(peerId, messageId, messageText, messageButtons) {
     const root = this.getRoot();
     if (root) {
-      return await root.editMessage(peerId, messageObject);
+      return await root.editMessage(peerId, messageId, messageText, messageButtons);
     } else {
       throw new Error('Root is not found!');
     }
@@ -748,28 +751,23 @@ class MenuItem {
    * @param {number} userId - User Id
    **/
   async draw(peerId, userId) {
-    this.log('debug', `label: ${this.label}, text: ${this.text}`);
+    const menuMessageText = this.text;
+    this.log('debug', `label: ${this.label}, text: ${menuMessageText}`);
     const refreshed = await this.refresh();
     this.log('debug', `Refreshed with result: ${refreshed}!`);
     if (refreshed === true) {
       const menuMessageId = this.getMessageId(userId),
-        buttons = this.getButtons(userId);
-      this.log('debug', `menuMessageId: ${menuMessageId}, buttons: ${stringifyButtons(buttons)}`);
+        menuMessageButtons = this.getButtons(userId);
+      this.log('debug', `menuMessageId: ${menuMessageId}, text: ${menuMessageText}, buttons: ${stringifyButtons(menuMessageButtons)}`);
       if (peerId !== null && peerId !== undefined) {
-        const messageParams = {};
-        if (Array.isArray(buttons) && buttons.length > 0) {
-          messageParams.buttons = buttons;
-        }
         if (menuMessageId !== 0) {
-          messageParams.message = menuMessageId;
-          messageParams.text = this.text;
           this.log(
             'debug',
             `${this.constructor.name}.draw{'${this.command}'}| `,
-            `Going to edit message: ${menuMessageId} with messageParams: ${stringifyButtons(messageParams)}`,
+            `Going to edit message: ${menuMessageId} with text: ${menuMessageText} and buttons: ${stringifyButtons(menuMessageButtons)}!`,
           );
           try {
-            await this.editMessage(peerId, messageParams);
+            await this.editMessage(peerId, menuMessageId, menuMessageText, menuMessageButtons);
             this.log('debug', `Message edited successfully!`);
           } catch (err) {
             if (err.code === 400 && err.errorMessage === 'MESSAGE_ID_INVALID') {
@@ -780,26 +778,25 @@ class MenuItem {
               this.log(
                 'warn',
                 `${this.constructor.name}.draw{'${this.command}'}| `,
-                `Message edit error: ${stringify(err)},  menuMessageId: ${menuMessageId}, text: ${this.text}`,
+                `Message edit error: ${stringify(err)},  menuMessageId: ${menuMessageId}, text: ${menuMessageText}`,
               );
             }
           }
         } else {
-          messageParams.message = this.text;
           this.log(
             'debug',
             `${this.constructor.name}.draw{'${this.command}'}| `,
-            `Going to send new message ` + `with messageParams: ${stringifyButtons(messageParams)}!`,
+            `Going to send new message ` + `with text: ${menuMessageText} and buttons: ${stringifyButtons(menuMessageButtons)}!`,
           );
           try {
-            const res = await this.sendMessage(peerId, messageParams);
-            this.log('debug', `Message sent successfully!`);
-            this.setMessageId(userId, res.id);
+            const newMenuMessageId = await this.sendMessage(peerId, menuMessageText, menuMessageButtons);
+            this.log('debug', `Message ${newMenuMessageId} sent successfully!`);
+            this.setMessageId(userId, newMenuMessageId);
           } catch (err) {
             this.log(
               'warn',
               `${this.constructor.name}.draw{'${this.command}'}| `,
-              `Message send error: ${stringify(err)}, text: ${this.text},  menuMessageId: ${menuMessageId}`,
+              `Message send error: ${stringify(err)}, text: ${menuMessageText},  menuMessageId: ${menuMessageId}`,
             );
           }
         }

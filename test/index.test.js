@@ -34,11 +34,11 @@ describe('MenuItemRoot', () => {
     });
 
     test('should throw error if sendMessage is not set', async () => {
-        await expect(menuItemRoot.sendMessage('peerId', {})).rejects.toThrow('sendMessage is not set');
+        await expect(menuItemRoot.sendMessage('peerId', 'test', [])).rejects.toThrow('sendMessage is not set');
     });
 
     test('should throw error if editMessage is not set', async () => {
-        await expect(menuItemRoot.editMessage('peerId', {})).rejects.toThrow('editMessage is not set');
+        await expect(menuItemRoot.editMessage('peerId', 'messageId', 'test', [])).rejects.toThrow('editMessage is not set');
     });
 
     test('should throw error if deleteMessage is not set', async () => {
@@ -61,15 +61,15 @@ describe('MenuItemRoot', () => {
     test('should set sendMessage correctly', async () => {
         const sendMessage = jest.fn();
         await menuItemRoot.init({ sendMessage });
-        await menuItemRoot.sendMessage('peerId', {});
-        expect(sendMessage).toHaveBeenCalledWith('peerId', {});
+        await menuItemRoot.sendMessage('peerId', 'test', []);
+        expect(sendMessage).toHaveBeenCalledWith('peerId', 'test', []);
     });
 
     test('should set editMessage correctly', async () => {
         const editMessage = jest.fn();
         await menuItemRoot.init({ editMessage });
-        await menuItemRoot.editMessage('peerId', {});
-        expect(editMessage).toHaveBeenCalledWith('peerId', {});
+        await menuItemRoot.editMessage('peerId', 'messageId', 'test', []);
+        expect(editMessage).toHaveBeenCalledWith('peerId', 'messageId', 'test', []);
     });
 
     test('should set deleteMessage correctly', async () => {
@@ -86,8 +86,8 @@ describe('MenuItemRoot', () => {
 
         await menuItemRoot.init({ sendMessageAsync, editMessageAsync, deleteMessageAsync });
 
-        await expect(menuItemRoot.sendMessage('peerId', {})).resolves.toBe('sent');
-        await expect(menuItemRoot.editMessage('peerId', {})).resolves.toBe('edited');
+        await expect(menuItemRoot.sendMessage('peerId', 'test', [])).resolves.toBe('sent');
+        await expect(menuItemRoot.editMessage('peerId', 'messageId', 'test', [])).resolves.toBe('edited');
         await expect(menuItemRoot.deleteMessage('peerId', 'messageId')).resolves.toBe('deleted');
     });
 
