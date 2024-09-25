@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.1](https://github.com/PetroVoronov/telegram-menu-from-structure/compare/v1.1.0...v1.1.1) (2024-09-25)
+
+
+### Bug Fixes
+
+* Fix removeValue method to process a full value key (including chatId) ([39ea4f0](https://github.com/PetroVoronov/telegram-menu-from-structure/commit/39ea4f00f571dde3ff14b60c03ff6a0ad0398f50))
+
 ## [1.1.0](https://github.com/PetroVoronov/telegram-menu-from-structure/compare/v1.0.3...v1.1.0) (2024-09-25)
 
 
