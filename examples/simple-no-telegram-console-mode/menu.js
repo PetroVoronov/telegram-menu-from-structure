@@ -54,7 +54,6 @@ const menuStructure = {
       label: 'Configuration',
       save: () => logMenu('Saving configuration. Data:', JSON.stringify(data)),
       structure: {
-        type: 'object',
         itemContent: {
           language: {
             type: 'string',
@@ -92,7 +91,6 @@ const menuStructure = {
       save: () => logMenu('Saving items. Data:', JSON.stringify(data)),
       structure: {
         primaryId: (data, isShort = false) => `${data.label} ${data.enabled ? '✅' : '❌'}`,
-        type: 'object',
         label: 'Item',
         text: 'Item for example',
         itemContent: {
