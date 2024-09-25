@@ -97,7 +97,7 @@ class MenuButtonBoolean extends MenuButton {
 }
 
 class MenuButtonInputText extends MenuButton {
-  static prompt = 'Please enter the "{{label}}"{{template}} value:';
+  static prompt = 'Please enter the "%s" %s value:';
   template = '';
   lastInput = '';
   /**
@@ -111,7 +111,7 @@ class MenuButtonInputText extends MenuButton {
   constructor(label, command, prompt = '', template = '', group = '') {
     super(label, command, prompt, group);
     this.prompt = prompt;
-    this.promptParams = {label: label};
+    this.promptParams = [label];
     if (template !== '') {
       this.template = template;
     }
@@ -120,9 +120,12 @@ class MenuButtonInputText extends MenuButton {
   get text() {
     let result = '';
     if (this.lastInput !== '') {
-      result = `${this.i18nTranslate('Wrong input')}: "${this.lastInput}!\n`;
+      result = `${this.i18nTranslate('Wrong input')}: "${this.lastInput}"!`;
     }
-    result += this.getPrompt();
+    const prompt = this.getPrompt();
+    if (prompt) {
+      result += `\n${prompt}`;
+    }
     return result;
   }
 
@@ -133,7 +136,7 @@ class MenuButtonInputText extends MenuButton {
       if (templateText !== '' && templateText !== undefined) {
         templateText = `(${this.i18nTranslate('template')}: "${templateText}")`;
       }
-      result = this.i18nTranslate(MenuButtonInputText.prompt, {...this.promptParams, template: templateText});
+      result = this.i18nTranslate(MenuButtonInputText.prompt, ...this.promptParams, templateText);
     } else {
       result = this.prompt;
     }
@@ -214,7 +217,7 @@ class MenuButtonInputText extends MenuButton {
 }
 
 class MenuButtonInputInteger extends MenuButtonInputText {
-  static prompt = 'Please enter the "{{label}}" integer{{options}} value:';
+  static prompt = 'Please enter the "%s" integer %s value:';
   static templateInteger = '^[0-9]+$';
 
   options = {};
@@ -252,7 +255,7 @@ class MenuButtonInputInteger extends MenuButtonInputText {
         }
       });
       const optionsText = optionsArray.length > 0 ? `(${optionsArray.join(', ')})` : '';
-      result = this.i18nTranslate(MenuButtonInputInteger.prompt, {...this.promptParams, options: optionsText});
+      result = this.i18nTranslate(MenuButtonInputInteger.prompt, ...this.promptParams, optionsText);
     }
     return result;
   }

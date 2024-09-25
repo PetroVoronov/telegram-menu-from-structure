@@ -4,6 +4,7 @@
 const stringify = require('json-stringify-safe');
 const emojiRegex = require('emoji-regex');
 const {SimpleLogger} = require('./MenuLogger');
+const util = require('node:util');
 
 const menuDefaults = {
   columnsMaxCount: {
@@ -266,7 +267,11 @@ class MenuItem {
   }
 
   i18nTranslate(...data) {
-    return this.#i18n ? this.#i18n.__(...data) : stringify(data);
+    if (this.#i18n && typeof this.#i18n.__ === 'function') {
+      return this.#i18n.__(...data);
+    } else {
+      return util.format(...data);
+    }
   }
 
   getCurrentMethodName() {

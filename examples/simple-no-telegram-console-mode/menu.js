@@ -1,13 +1,26 @@
-const {MenuItemRoot, menuDefaults} = require('telegram-menu-from-structure');
 const rl = require('readline-sync');
+
+const args = process.argv;
+let useLocal = false;
+if (args.length > 2) {
+  useLocal = args[2] === '--local';
+}
+
+const {MenuItemRoot, menuDefaults} = useLocal ? require('../../src/index') : require('telegram-menu-from-structure');
 
 const data = {};
 
 const getLanguages = () => {
-  return new Map(i18n.getLocales().map((locale) => [locale, locale]));
+  return new Map([
+    ['en', 'English'],
+    ['de', 'German'],
+    ['es', 'Spanish'],
+    ['fr', 'French'],
+    ['uk', 'Ukrainian'],
+  ]);
 };
 const onLanguageChange = (currentItem, key, data, path) => {
-  console.log('\x1b[36m', 'Language changed to:', data[key], '\x1b[0m');
+  logMenu('Language changed to:', data[key]);
   return true;
 };
 const onButtonMaxCountChange = (currentItem, key, data, path) => {
@@ -39,41 +52,44 @@ const menuStructure = {
     configuration: {
       type: 'object',
       label: 'Configuration',
-      save: () => console.log('\x1b[36m', 'Saving configuration. Data:', JSON.stringify(data), '\x1b[0m'),
+      save: () => logMenu('Saving configuration. Data:', JSON.stringify(data)),
       structure: {
-        language: {
-          type: 'string',
-          presence: 'mandatory',
-          editable: true,
-          sourceType: 'list',
-          source: getLanguages,
-          onSetAfter: onLanguageChange,
-          default: 'en',
-          label: 'Menu language',
-          text: 'Language of the Menu',
-        },
-        buttonsMaxCount: {
-          type: 'number',
-          subType: 'integer',
-          options: {
-            min: menuDefaults.buttonsMaxCount.min,
-            max: menuDefaults.buttonsMaxCount.max,
-            step: menuDefaults.buttonsMaxCount.step,
+        type: 'object',
+        itemContent: {
+          language: {
+            type: 'string',
+            presence: 'mandatory',
+            editable: true,
+            sourceType: 'list',
+            source: getLanguages,
+            onSetAfter: onLanguageChange,
+            default: 'en',
+            label: 'Menu language',
+            text: 'Language of the Menu',
           },
-          sourceType: 'input',
-          presence: 'mandatory',
-          editable: true,
-          onSetAfter: onButtonMaxCountChange,
-          default: menuDefaults.buttonsMaxCount.default,
-          label: 'Max buttons on "page"',
-          text: 'Max count of buttons on the one "page" of the menu',
+          buttonsMaxCount: {
+            type: 'number',
+            subType: 'integer',
+            options: {
+              min: menuDefaults.buttonsMaxCount.min,
+              max: menuDefaults.buttonsMaxCount.max,
+              step: menuDefaults.buttonsMaxCount.step,
+            },
+            sourceType: 'input',
+            presence: 'mandatory',
+            editable: true,
+            onSetAfter: onButtonMaxCountChange,
+            default: menuDefaults.buttonsMaxCount.default,
+            label: 'Max buttons on "page"',
+            text: 'Max count of buttons on the one "page" of the menu',
+          },
         },
       },
     },
     items: {
       type: 'array',
       label: 'Items',
-      save: () => console.log('\x1b[36mSaving items. Data:', JSON.stringify(data), '\x1b[0m'),
+      save: () => logMenu('Saving items. Data:', JSON.stringify(data)),
       structure: {
         primaryId: (data, isShort = false) => `${data.label} ${data.enabled ? '✅' : '❌'}`,
         type: 'object',
@@ -94,15 +110,15 @@ const menuStructure = {
             editable: true,
             default: false,
             onSetBefore: (currentItem, key, data, path) => {
-              console.log(
-                `\x1b[36m onSetBefore: currentItem: ${JSON.stringify(currentItem)}, key: ${key}, data: ${JSON.stringify(
+              logMenu(
+                `onSetBefore: currentItem: ${JSON.stringify(currentItem)}, key: ${key}, data: ${JSON.stringify(
                   data,
-                )}, path: ${path}\x1b[0m`,
+                )}, path: ${path}`,
               );
-              if (data.label !== undefined && data.type !== undefined && currentItem[key] !== false) {
+              if (data.label !== undefined && data.type !== undefined || currentItem[key] === true) {
                 return true;
               } else {
-                console.log('\x1b[36m', 'Item is not ready for enabling', '\x1b[0m');
+                logMenu('Item is not ready for enabling');
                 return false;
               }
             },
@@ -133,19 +149,17 @@ let lastMessageObject = null;
 const buttons = [];
 
 function printMessage(messageObject) {
-  console.log(` text: \x1b[35m${typeof messageObject.message === 'string' ? messageObject.message : messageObject.text}\x1b[0m`);
+  console.log(` text: ${formatMenuText(typeof messageObject.message === 'string' ? messageObject.message : messageObject.text)}`);
   console.log(` buttons: `);
   messageObject.buttons.forEach((buttonsRow) => {
     console.log(
-      `  \x1b[35m` +
         buttonsRow
           .map((button) => {
-            const buttonString = '\x1b[31m(' + buttons.length.toString().padStart(3, ' ') + ') \x1b[32m' + button.label;
+            const buttonString = formatMenuButton(button.label, buttons.length);
             buttons.push(button.label);
             return buttonString;
           })
-          .join(' ') +
-        `\x1b[0m`,
+          .join(' '),
     );
   });
 }
@@ -155,6 +169,7 @@ const userId = 'test';
 
 async function sendMessageToBot(message) {
   userMessageId++;
+  buttons.splice(0, buttons.length);
   console.clear();
   await menuRoot.onCommand(peer, userId, userMessageId, message, false);
 }
@@ -164,6 +179,7 @@ async function pressButton(label) {
     for (let buttonsRow of lastMessageObject.buttons) {
       for (let button of buttonsRow) {
         if (button.label === label) {
+          buttons.splice(0, buttons.length);
           console.clear();
           await menuRoot.onCommand(peer, userId, botMessageId, button.command, true);
           return button.command !== '/exit';
@@ -196,25 +212,25 @@ async function example() {
     logLevel: 'info',
   });
 
-
   let button = '/start';
   await sendMessageToBot(button);
   while (true) {
-    if (buttons.length === 0) {
+    if (buttons.length === 0 && lastMessageObject !== null) {
       printMessage(lastMessageObject);
     }
-    const input = rl.question('Enter button Id or input data (if requested):');
-    let buttonId = parseInt(input);
-    if (!isNaN(buttonId)) {
-      if (buttonId < 0 || buttonId >= buttons.length) {
-        await pressButton(button);
-        console.log('Invalid button Id');
-        continue;
-      }
-      button = buttons[buttonId];
-      buttons.splice(0, buttons.length);
-      if (! await pressButton(button)) {
-        break;
+    const input = rl.question('Enter button Id in format "#Number" or input data (if requested):');
+    if (input.startsWith('#')) {
+      let buttonId = parseInt(input.substring(1));
+      if (!isNaN(buttonId)) {
+        if (buttonId < 0 || buttonId >= buttons.length) {
+          await pressButton(button);
+          console.log('Invalid button Id');
+          continue;
+        }
+        button = buttons[buttonId];
+        if (!(await pressButton(button))) {
+          break;
+        }
       }
     } else {
       await sendMessageToBot(input);
@@ -223,3 +239,16 @@ async function example() {
 }
 
 example();
+
+
+function logMenu(...message) {
+  console.log('\x1b[36m', ...message, '\x1b[0m');
+}
+
+function formatMenuText(text) {
+  return `\x1b[35m${text}\x1b[0m`;
+}
+
+function formatMenuButton(label, index) {
+  return `\x1b[31m(${('#' + index.toString()).padStart(4, ' ')}) \x1b[32m${label}\x1b[0m`;
+}
