@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.1.3](https://github.com/PetroVoronov/telegram-menu-from-structure/compare/v1.1.2...v1.1.3) (2024-09-26)
+
+
+### Documentation
+
+* Add example for a simple Telegram bot using Telegraf library ([1f0fa5d](https://github.com/PetroVoronov/telegram-menu-from-structure/commit/1f0fa5d8ef13a701ce2c70de586990e221b9390b))
+
+
+### Code Refactoring
+
+* **examples:** Added a new example for a simple Telegram bot using the Telegraf library. ([1f0fa5d](https://github.com/PetroVoronov/telegram-menu-from-structure/commit/1f0fa5d8ef13a701ce2c70de586990e221b9390b))
+
 ## [1.1.2](https://github.com/PetroVoronov/telegram-menu-from-structure/compare/v1.1.1...v1.1.2) (2024-09-26)
 
 
