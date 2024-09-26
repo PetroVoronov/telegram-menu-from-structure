@@ -1,5 +1,20 @@
 # Changelog
 
+## [1.1.2](https://github.com/PetroVoronov/telegram-menu-from-structure/compare/v1.1.1...v1.1.2) (2024-09-26)
+
+
+### Documentation
+
+* Append details about data processing and Menu structure to README.md ([56d68ed](https://github.com/PetroVoronov/telegram-menu-from-structure/commit/56d68eda1adaf8605d4a6366227facb1ef11e175))
+* Finalizing README.md ([68d5343](https://github.com/PetroVoronov/telegram-menu-from-structure/commit/68d5343ce23409fd77ce8ad85abd863020437a79))
+
+
+### Code Refactoring
+
+* **examples:** Refactor menu structure in menu.js (simple-no-telegram-console-mode) ([56d68ed](https://github.com/PetroVoronov/telegram-menu-from-structure/commit/56d68eda1adaf8605d4a6366227facb1ef11e175))
+* **examples:** Small cosmetic change in `menu.js`(simple-no-telegram-console-mode). Additionally package.json for these example is improved. ([68d5343](https://github.com/PetroVoronov/telegram-menu-from-structure/commit/68d5343ce23409fd77ce8ad85abd863020437a79))
+* **MenuButton:** Refactor logging. Some messages are changed to the `debug` level ([68d5343](https://github.com/PetroVoronov/telegram-menu-from-structure/commit/68d5343ce23409fd77ce8ad85abd863020437a79))
+
 ## [1.1.1](https://github.com/PetroVoronov/telegram-menu-from-structure/compare/v1.1.0...v1.1.1) (2024-09-25)
 
 
