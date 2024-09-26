@@ -15,7 +15,8 @@
         "preversion",
         "sonarjs",
         "strftime",
-        "Voronov"
+        "Voronov",
+        "whatwg"
     ],
     "ignoreWords": [],
     "import": []

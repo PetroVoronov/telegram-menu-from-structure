@@ -36,6 +36,7 @@ A Telegram menu generation and processing module based on structured data.
     - [Receive and process user input](#receive-and-process-user-input-1)
   - [Examples](#examples)
     - [Simple console example aka Demo](#simple-console-example-aka-demo)
+    - [Simple Telegram bot example based on Telegraf library](#simple-telegram-bot-example-based-on-telegraf-library)
   - [Testing](#testing)
   - [Changelog](#changelog)
   - [Contributing](#contributing)
@@ -513,6 +514,42 @@ Bot messages will start from 201.
 
 Notes:
 - The example is not a real Telegram bot. It is a console application that emulates the interaction with the bot.
+- If you receive errors on start, or try to use "local" mode or update an dependencies, please run `npm install`  or `npm update` to install or update the required packages.
+
+
+### Simple Telegram bot example based on Telegraf library
+
+This example is a simple Telegram bot example that demonstrates how to module will work with real Telegram bot. It's based on the [Telegraf](https://github.com/telegraf/telegraf) library.
+
+**You can test this module only if you have a real Telegram bot token.**
+
+Instructions how to get the token and create a bot can be found [here](https://core.telegram.org/bots/tutorial#obtain-your-bot-token).
+
+To run the example, use the following command:
+
+```sh
+cd examples/simple-telegraf
+npm install
+npm start
+```
+
+By default this example demo will use the "external" version of Menu package. It will be downloaded from the npm repository by `npm install` command.
+
+If you want to use the local version of the Menu package, you should use the following command, instead of `npm start`:
+
+```sh
+npm run start-local
+```
+
+But ```npm install``` should be run before this command to install other required packages.
+
+You have to input the Telegram bot token on a script request. After that the bot will be started and you can interact with it in the Telegram chat.
+
+As result you will see the menu in the Telegram chat with the bot and you can interact with it.
+
+Additional logging will be shown in the console. You can see the what is happening with data and messages.
+
+Notes:
 - If you receive errors on start, or try to use "local" mode or update an dependencies, please run `npm install`  or `npm update` to install or update the required packages.
 
 ## Testing

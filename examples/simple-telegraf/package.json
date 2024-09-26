@@ -1,0 +1,16 @@
+{
+    "name": "simple-no-telegram-console-mode",
+    "main": "menu.js",
+    "scripts": {
+        "start": "node menu.js",
+        "start-local": "node menu.js --local"
+    },
+    "dependencies": {
+        "readline-sync": "^1.4.10",
+        "telegraf": "^4.16.3",
+        "telegram-menu-from-structure": "^1.0.2"
+    },
+    "overrides": {
+        "whatwg-url": "^14.0.0"
+    }
+}
