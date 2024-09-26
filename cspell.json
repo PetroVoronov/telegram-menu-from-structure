@@ -8,6 +8,7 @@
         "arrowParens",
         "genversion",
         "gramjs",
+        "instanceof",
         "localstorage",
         "MTProto",
         "NOSONAR",

@@ -179,12 +179,12 @@ class MenuButtonInputText extends MenuButton {
       const root = this.getRoot();
       if (root !== null) {
         if (root.processInputForCommand === '') {
-          this.log('info', `root.processInputForCommand is empty`);
+          this.log('debug', `root.processInputForCommand is empty`);
           root.processInputForCommand = this.command;
           this.processInputForCommand = this.command;
           await this.draw(peerId, userId);
         } else if (root.processInputForCommand === this.command) {
-          this.log('info', `root.processInputForCommand is ${this.command}`);
+          this.log('debug', `root.processInputForCommand is ${this.command}`);
           let accepted = true;
           if (this.template !== '') {
             const template = this.template;

@@ -203,7 +203,7 @@ async function example() {
       printMessage(lastMessageObject);
       return true;
     },
-    deleteMessage: (peer, menuMessageId) => {
+    deleteMessage: (peerId, menuMessageId) => {
       console.log('Deleting message:', menuMessageId, 'from', menuMessageId === userMessageId ? `user "${userId}"` : 'bot');
       return true;
     },

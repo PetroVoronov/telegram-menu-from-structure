@@ -26,6 +26,16 @@ A Telegram menu generation and processing module based on structured data.
           - [Fields of the Submenu Item `structure` Object for `object` type](#fields-of-the-submenu-item-structure-object-for-object-type)
           - [Fields of the Submenu Item `structure` Object for `array` type](#fields-of-the-submenu-item-structure-object-for-array-type)
         - [How the Items of Submenu are described in the `itemContent` object](#how-the-items-of-submenu-are-described-in-the-itemcontent-object)
+    - [External functions to interact with Telegram](#external-functions-to-interact-with-telegram)
+    - [Receive and process user input](#receive-and-process-user-input)
+    - [Class constructor](#class-constructor)
+    - [Menu initialization method](#menu-initialization-method)
+  - [Usage](#usage)
+    - [New instance of the `MenuItemRoot` class](#new-instance-of-the-menuitemroot-class)
+    - [Initialize the menu](#initialize-the-menu)
+    - [Receive and process user input](#receive-and-process-user-input-1)
+  - [Examples](#examples)
+    - [Simple console example aka Demo](#simple-console-example-aka-demo)
   - [Testing](#testing)
   - [Changelog](#changelog)
   - [Contributing](#contributing)
@@ -282,7 +292,228 @@ This object can have the following fields:
 * `label` - string, the label of the field
 * `text` - string, the text of the field
 
+### External functions to interact with Telegram
 
+There are four external function, dependant on the external library to work with Telegram, which should be provided to the `MenuItemRoot` class:
+
+* The first one is a function that generates a button for the menu, acceptable by external library to work with Telegram.
+  * `makeButton` - it should has the following parameters:
+    * `label` - the label of the button
+    * `command` - the command that triggers the button
+    And should return the button object acceptable by external library to work with Telegram
+* And three functions to interact with Telegram. These functions can be "usual", i.e. synchronous type or "async" type. It depends on the external library to work with Telegram. Please see details below
+  * `sendMessage` - a function that sends the message(Menu) to Telegram
+    It should has three parameters:
+    * `peerId` - the unique identifier of the chat with the user in external library to work with Telegram
+    * `messageText` - the text part of the message(Menu)
+    * `messageButtons` - the array with a buttons part of the message(Menu)
+    And should return the number identifier of the newly sended message(Menu) in Telegram
+  * `editMessage` - a function that edits the the message(Menu) in Telegram
+    It should has four parameters:
+    * `peerId` - the unique identifier of the chat with the user in external library to work with Telegram
+    * `messageId` - the number identifier of the message(Menu) in Telegram
+    * `messageText` - the text part of the message(Menu)
+    * `messageButtons` - the array with a buttons part of the message(Menu)
+    And should return the true or false if the message was edited successfully
+  * `deleteMessage` - a function that deletes the message (user input and Menu itself)
+      It should has two parameters:
+    * `peerId` - the unique identifier of the chat with the user in external library to work with Telegram
+    * `messageId` - the number identifier of the message(Menu) in Telegram
+    And should return the true or false if the message was deleted successfully
+
+
+
+### Receive and process user input
+
+The main and only one method to receive and process user input is the method `onCommand` of the `MenuItemRoot` class. There is an async function which should be called on reaction of the external library to work with Telegram when the user sends a message to the bot or pressed a button in the menu.
+It currently has a lot of parameters:
+* `peerId` - the unique identifier of the chat with the user in external library to work with Telegram
+* `userId` - the unique identifier of the user in external library to work with Telegram. Used internally to separate the technical data of different users (like last message id, etc.)
+* `messageId` - the number identifier of the message(Menu) in Telegram
+* `command` - the command which was sent by the user. It can be a command from menu button or an user input to change the value of the menu item
+* `isEvent` - boolean, if the command is an event from the menu button it has to be `true`, otherwise if it is a user input - should be `false`
+* `isTarge` - boolean, should be always `false` or skipped. It is used internally
+
+
+### Class constructor
+Is used to create a new instance of the `MenuItemRoot` class. It has only one parameter:
+* `menuStructure` - the menu structure object that describes the menu. See details in [Menu Structure Object](#menu-structure-object)
+
+### Menu initialization method
+Is used to initialize the menu. It has only one parameter:
+* `menuInitializationObject` with several fields:
+  * `makeButton` - the function that generates a button for the menu. Mandatory.
+  The telegram interaction functions can be synchronous or asynchronous. It is **critically important** to assign this function to the appropriate type. Do not assign `async` send message function to synchronous `sendMessage` parameter of the `menuInitializationObject` and vice versa.
+  * `sendMessage` or `sendMessageAsync` - the function that sends the message(Menu) to Telegram. Mandatory
+  * `editMessage` or `editMessageAsync` - the function that edits the the message(Menu) in Telegram. Mandatory
+  * `deleteMessage` or `deleteMessageAsync` - the function that deletes the message (user input and Menu itself). Mandatory
+  * `logLevel` - the level of logging. Can be skipped. It can be one of the following values:
+    * `error` - only errors are logged
+    * `warning` - errors and warnings are logged
+    * `info` - errors and info messages are logged
+    * `debug` - errors, info messages and debug messages are logged
+  * `logger`- the instance of any external logger class. Can be skipped. The logger should have the following methods:
+    * `error` - logs an error message
+    * `warn` - logs a warning message
+    * `info` - logs an info message
+    * `debug` - logs a debug message
+  * `i18n` - the instance of any external i18n class. Can be skipped. The i18n should have the following methods:
+    * `__` - translates a text. Should has possibility to process formatted strings with parameters. Similar to `node:util.format`
+
+## Usage
+
+### New instance of the `MenuItemRoot` class
+
+At first you should import the module and then create a new instance of the `MenuItemRoot` class with the menu structure object as a parameter:
+
+```javascript
+import { MenuItemRoot, menuDefaults } from 'telegram-menu-from-structure';
+...
+const menu = new MenuItemRoot(menuStructure);
+```
+
+### Initialize the menu
+
+At second you should prepare the `makeButton` amd Telegram interaction functions and initialize the menu:
+
+```javascript
+...
+const makeButton = (label, command) => {
+  // Generate the button for Telegram
+};
+
+const sendMessageAsync = async (peerId, messageText, messageButtons) => {
+  // Send the message to Telegram
+};
+const editMessageAsync = async (peerId, messageId, messageText, messageButtons) => {
+  // Edit the message in Telegram
+};
+const deleteMessageAsync = async (peerId, messageId) => {
+  // Delete the message in Telegram
+};
+
+menu.init({
+  makeButton: makeButton,
+  sendMessageAsync: sendMessageAsync,
+  editMessageAsync: editMessageAsync,
+  deleteMessageAsync: deleteMessageAsync,
+  logLevel: 'debug',
+  },
+});
+```
+
+### Receive and process user input
+There is an example to use the Menu with [GramJs](https://github.com/gram-js/gramjs) library:
+
+```javascript
+import { MenuItemRoot, menuDefaults } from 'telegram-menu-from-structure';
+import { TelegramClient } from 'telegram';
+...
+const client = new TelegramClient(
+  ...
+);
+
+const allowedUsers = [
+  ...
+]; // List of allowed users
+...
+const menu = new MenuItemRoot(menuStructure);
+...
+menu.init(
+  ...
+);
+...
+client.addEventHandler((event) => {
+  const {peer: peerId, msgId: messageId, data} = event.query;
+  if (data !== undefined) {
+    const command = data.toString();
+    if (command.startsWith(menuDefaults.cmdPrefix)) {
+      menu.onCommand(peerId, peerId.userId, messageId, command, true);
+    }
+  }
+}, new CallbackQuery({chats: allowedUsers}));
+
+client.addEventHandler((event) => {
+  const {peerId, id: messageId, message: command} = event.message;
+  menu.onCommand(peerId, peerId.userId, messageId, command, false);
+}, new NewMessage({chats: allowedUsers}));
+
+```
+
+## Examples
+
+### Simple console example aka Demo
+
+This example is a simple console example that demonstrates how to module will work from the user point of view. It's emulates the Bot interaction with the user in the console.
+
+**You can test this module without real Telegram bot.**
+
+It is configured to provide two submenu items: `Configuration` and `Items`. The `Configuration` submenu item has two fields: `language` and `buttonsMaxCount`. The `Items` submenu item is an array of objects with three fields: `label`, `enabled`, and `type`.
+
+You can go thru the menu, change the values of the fields, add, delete or modify the items of the array. The menu will show the changes in the console.
+At start it will have no data, but you can manage it as you want during the work with the menu. After exit the menu the data will not be saved.
+
+To run the example, use the following command:
+
+```sh
+cd examples/simple-no-telegram-console-mode
+npm install
+npm start
+```
+
+By default this example demo will use the "external" version of Menu package. It will be downloaded from the npm repository by `npm install` command.
+
+If you want to use the local version of the Menu package, you should use the following command, instead of `npm start`:
+
+```sh
+npm run start-local
+```
+
+But ```npm install``` should be run before this command to install other required packages.
+
+As result you will see the menu in the console and you can interact with it.
+It will at start emulate the sending `/start` command to the bot and will show the result of the menu generation in the console:
+```
+Deleting message: 101 from user "test"
+Sending message to user:
+ text: This is the main menu
+ buttons:
+(  #0) Configuration
+(  #1) Items []
+(  #2) Exit
+Enter button Id in format "#Number" or input data (if requested):
+```
+
+You can navigate thru the menu by input the number of the button with mandatory `#` symbol as prefix. Or you can input the data for the field of the submenu item, if it will be requested. Like this:
+```
+Message with id 201 to user is edited:
+ text:
+Please enter the "Max buttons on "page"" integer (min: 1, max: 100, step: 1) value:
+ buttons:
+(  #0) Cancel
+Enter button Id in format "#Number" or input data (if requested):
+```
+
+Except the menu you will see the additional messages to explain the actions and results of the actions. Like this:
+```
+Deleting message: 101 from user "test"
+```
+or
+```
+Message with id 201 to user is edited:
+```
+or
+```
+Saving configuration. Data: {"buttonsOffset.test":0,"lastCommand.test":"/configuration?buttonsMaxCount","menuMessageId.test":201,"configuration":{"buttonsMaxCount":10}}
+```
+
+Take in account, you will work as "user" with id "test", as it is hardcoded in the example.
+User messages will start from 101.
+Bot messages will start from 201.
+
+Notes:
+- The example is not a real Telegram bot. It is a console application that emulates the interaction with the bot.
+- If you receive errors on start, or try to use "local" mode or update an dependencies, please run `npm install`  or `npm update` to install or update the required packages.
 
 ## Testing
 
