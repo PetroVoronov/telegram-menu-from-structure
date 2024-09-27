@@ -97,7 +97,7 @@ class MenuButtonBoolean extends MenuButton {
 }
 
 class MenuButtonInputText extends MenuButton {
-  static prompt = 'Please enter the "%s" %s value:';
+  static prompt = 'Current "%s" value: %s.\nPlease enter new value: %s';
   template = '';
   lastInput = '';
   /**
@@ -129,14 +129,22 @@ class MenuButtonInputText extends MenuButton {
     return result;
   }
 
-  getPrompt() {
+  getPrompt(textOfTemplate = '') {
     let result = '';
     if (this.prompt === '') {
-      let templateText = typeof this.template === 'function' ? this.template()?.text : this.template;
-      if (templateText !== '' && templateText !== undefined) {
-        templateText = `(${this.i18nTranslate('template')}: "${templateText}")`;
+      let templateText = textOfTemplate;
+      if (templateText === '') {
+        templateText = typeof this.template === 'function' ? this.template()?.text : this.template;
+        if (templateText !== '' && templateText !== undefined) {
+          templateText = `(${this.i18nTranslate('template')}: "${templateText}")`;
+        }
       }
-      result = this.i18nTranslate(MenuButtonInputText.prompt, ...this.promptParams, templateText);
+      result = this.i18nTranslate(
+        MenuButtonInputText.prompt,
+        ...this.promptParams,
+        this.getData() || '?',
+        templateText ? `[${templateText}]` : '',
+      );
     } else {
       result = this.prompt;
     }
@@ -217,7 +225,6 @@ class MenuButtonInputText extends MenuButton {
 }
 
 class MenuButtonInputInteger extends MenuButtonInputText {
-  static prompt = 'Please enter the "%s" integer %s value:';
   static templateInteger = '^[0-9]+$';
 
   options = {};
@@ -254,8 +261,8 @@ class MenuButtonInputInteger extends MenuButtonInputText {
           optionsArray.push(`${this.i18nTranslate(key)}: ${this.options[key]}`);
         }
       });
-      const optionsText = optionsArray.length > 0 ? `(${optionsArray.join(', ')})` : '';
-      result = this.i18nTranslate(MenuButtonInputInteger.prompt, ...this.promptParams, optionsText);
+      const optionsText = optionsArray.length > 0 ? `${optionsArray.join(', ')}` : '';
+      result = super.getPrompt(optionsText);
     }
     return result;
   }
