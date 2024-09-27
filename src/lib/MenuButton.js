@@ -142,7 +142,7 @@ class MenuButtonInputText extends MenuButton {
       result = this.i18nTranslate(
         MenuButtonInputText.prompt,
         ...this.promptParams,
-        this.getData() || '?',
+        this.getData() !== null && this.getData() !== undefined ? `${this.getData()}` : '?',
         templateText ? `[${templateText}]` : '',
       );
     } else {
