@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.5](https://github.com/PetroVoronov/telegram-menu-from-structure/compare/v1.1.4...v1.1.5) (2024-09-27)
+
+
+### Bug Fixes
+
+* **MenuButton:** Fix prompt for 0 or '' values ([4dd2063](https://github.com/PetroVoronov/telegram-menu-from-structure/commit/4dd2063ddbeba78a1066d70554425d235c10e666))
+
 ## [1.1.4](https://github.com/PetroVoronov/telegram-menu-from-structure/compare/v1.1.3...v1.1.4) (2024-09-27)
 
 
