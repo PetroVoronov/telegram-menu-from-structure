@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.4](https://github.com/PetroVoronov/telegram-menu-from-structure/compare/v1.1.3...v1.1.4) (2024-09-27)
+
+
+### Code Refactoring
+
+* Refactor MenuButtonInputText and MenuButtonInputInteger prompt functionality to include current value and improve template handling. ([388c85e](https://github.com/PetroVoronov/telegram-menu-from-structure/commit/388c85eec6c1f7487a9b5d0e1c2a247de502d70f))
+
 ## [1.1.3](https://github.com/PetroVoronov/telegram-menu-from-structure/compare/v1.1.2...v1.1.3) (2024-09-26)
 
 
