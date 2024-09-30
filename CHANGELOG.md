@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.6](https://github.com/PetroVoronov/telegram-menu-from-structure/compare/v1.1.5...v1.1.6) (2024-09-30)
+
+
+### Code Refactoring
+
+* **MenuButtonInput*:** Refactor MenuButton and MenuItemStructured constructors ([eeaebe7](https://github.com/PetroVoronov/telegram-menu-from-structure/commit/eeaebe7de81fe5fbfd77eb995f7010205efd1582))
+
 ## [1.1.5](https://github.com/PetroVoronov/telegram-menu-from-structure/compare/v1.1.4...v1.1.5) (2024-09-27)
 
 
