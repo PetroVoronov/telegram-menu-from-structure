@@ -103,15 +103,14 @@ class MenuButtonInputText extends MenuButton {
   /**
    * @param {string|function} label - The label of the item
    * @param {string|function} command - The command to execute
-   * @param {string|function} prompt - The text to display
+   * @param {string|function} text - The text to display
    * @param {string|function} template - The template for the input
    * @param {object} options - The options of item
    * @param {string} group - The group to add the item to
    */
-  constructor(label, command, prompt = '', template = '', group = '') {
-    super(label, command, prompt, group);
-    this.prompt = prompt;
-    this.promptParams = [label];
+  constructor(label, command, text = '', template = '', group = '') {
+    super(label, command, text, group);
+    this.promptParams = [text];
     if (template !== '') {
       this.template = template;
     }
@@ -122,33 +121,27 @@ class MenuButtonInputText extends MenuButton {
     if (this.lastInput !== '') {
       result = `${this.i18nTranslate('Wrong input')}: "${this.lastInput}"!`;
     }
-    const prompt = this.getPrompt();
-    if (prompt) {
-      result += `\n${prompt}`;
+    const text = this.getPrompt();
+    if (text) {
+      result += `\n${text}`;
     }
     return result;
   }
 
   getPrompt(textOfTemplate = '') {
-    let result = '';
-    if (this.prompt === '') {
-      let templateText = textOfTemplate;
-      if (templateText === '') {
-        templateText = typeof this.template === 'function' ? this.template()?.text : this.template;
-        if (templateText !== '' && templateText !== undefined) {
-          templateText = `(${this.i18nTranslate('template')}: "${templateText}")`;
-        }
+    let templateText = textOfTemplate;
+    if (templateText === '') {
+      templateText = typeof this.template === 'function' ? this.template()?.text : this.template;
+      if (templateText !== '' && templateText !== undefined) {
+        templateText = `(${this.i18nTranslate('template')}: "${templateText}")`;
       }
-      result = this.i18nTranslate(
-        MenuButtonInputText.prompt,
-        ...this.promptParams,
-        this.getData() !== null && this.getData() !== undefined ? `${this.getData()}` : '?',
-        templateText ? `[${templateText}]` : '',
-      );
-    } else {
-      result = this.prompt;
     }
-    return result;
+    return this.i18nTranslate(
+      MenuButtonInputText.prompt,
+      ...this.promptParams,
+      this.getData() !== null && this.getData() !== undefined ? `${this.getData()}` : '?',
+      templateText ? `[${templateText}]` : '',
+    );
   }
 
   /**
@@ -228,8 +221,8 @@ class MenuButtonInputInteger extends MenuButtonInputText {
   static templateInteger = '^[0-9]+$';
 
   options = {};
-  constructor(label, command, prompt = '', options = {}, group = '') {
-    super(label, command, prompt, '', group);
+  constructor(label, command, text = '', options = {}, group = '') {
+    super(label, command, text, '', group);
     this.options = options;
     this.template = (input) => {
       if (input === undefined || input === null) {
@@ -253,18 +246,15 @@ class MenuButtonInputInteger extends MenuButtonInputText {
   }
 
   getPrompt() {
-    let result = this.prompt;
-    if (result === '') {
-      let optionsArray = [];
-      ['min', 'max', 'step'].forEach((key) => {
-        if (typeof this.options[key] === 'number') {
-          optionsArray.push(`${this.i18nTranslate(key)}: ${this.options[key]}`);
-        }
-      });
-      const optionsText = optionsArray.length > 0 ? `${optionsArray.join(', ')}` : '';
-      result = super.getPrompt(optionsText);
-    }
-    return result;
+    let optionsArray = [];
+    ['min', 'max', 'step'].forEach((key) => {
+      if (typeof this.options[key] === 'number') {
+        optionsArray.push(`${this.i18nTranslate(key)}=${this.options[key]}`);
+      }
+    });
+    const type = this.i18nTranslate(this.options.step != 0 && this.options.step % 1 === 0 ? 'integer' : 'number');
+    const optionsText = type + (optionsArray.length > 0 ? `: ${optionsArray.join(', ')}` : '');
+    return super.getPrompt(optionsText);
   }
 
   convertInput(input) {

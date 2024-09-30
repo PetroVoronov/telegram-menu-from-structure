@@ -467,12 +467,12 @@ class MenuItemStructured extends MenuItem {
               // eslint-disable-next-line sonarjs/no-nested-switch
               switch (structureItem.type) {
                 case 'string': {
-                  item = new MenuButtonInputText(label, command, '', template, group);
+                  item = new MenuButtonInputText(label, command, text, template, group);
                   break;
                 }
                 case 'number': {
                   if (structureItem.subType === 'integer') {
-                    item = new MenuButtonInputInteger(label, command, '', options, group);
+                    item = new MenuButtonInputInteger(label, command, text, options, group);
                   }
                   break;
                 }
