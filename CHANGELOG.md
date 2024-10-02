@@ -1,5 +1,29 @@
 # Changelog
 
+## [1.2.0](https://github.com/PetroVoronov/telegram-menu-from-structure/compare/v1.1.7...v1.2.0) (2024-10-02)
+
+
+### Features
+
+* Add support for `extraRefresh` in `MenuItemStructured`. ([fd78b27](https://github.com/PetroVoronov/telegram-menu-from-structure/commit/fd78b27cf1b9971b89aa6e23a8903db53130ef62))
+
+
+### Code Refactoring
+
+* **examples:** Update examples/simple-telegraf/menu.js and examples/simple-no-telegram-console-mode/menu.js to use extraRefresh flag in source function ([fd78b27](https://github.com/PetroVoronov/telegram-menu-from-structure/commit/fd78b27cf1b9971b89aa6e23a8903db53130ef62))
+* **MenuButton:** Get rid of `MenuButtonListTypedAsync`, everything is covered by `MenuButtonListTyped` ([fd78b27](https://github.com/PetroVoronov/telegram-menu-from-structure/commit/fd78b27cf1b9971b89aa6e23a8903db53130ef62))
+* **MenuItem:** Add `getBottomRow()` method in `MenuItem`. Modify getButtons() method in `MenuItem` to include `bottomRow`. ([fd78b27](https://github.com/PetroVoronov/telegram-menu-from-structure/commit/fd78b27cf1b9971b89aa6e23a8903db53130ef62))
+
+
+### Continuous Integration
+
+* Update release-please-config.json. Change order of Changelog sections. ([99a89a6](https://github.com/PetroVoronov/telegram-menu-from-structure/commit/99a89a6bdc3aca5e85f412e8dcec3745055551c0))
+
+
+### Documentation
+
+* Update README.md with additional information about sourceAsync and extraRefresh ([fd78b27](https://github.com/PetroVoronov/telegram-menu-from-structure/commit/fd78b27cf1b9971b89aa6e23a8903db53130ef62))
+
 ## [1.1.7](https://github.com/PetroVoronov/telegram-menu-from-structure/compare/v1.1.6...v1.1.7) (2024-10-02)
 
 
