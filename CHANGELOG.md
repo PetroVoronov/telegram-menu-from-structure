@@ -1,5 +1,23 @@
 # Changelog
 
+## [1.1.7](https://github.com/PetroVoronov/telegram-menu-from-structure/compare/v1.1.6...v1.1.7) (2024-10-02)
+
+
+### Continuous Integration
+
+* Update package-lock.json ([97447b4](https://github.com/PetroVoronov/telegram-menu-from-structure/commit/97447b498a50ab2ed3a2e31201519b08525d5789))
+
+
+### Bug Fixes
+
+* Fix MenuITem.config to pass the default values as initialization values to configuration params ([2260730](https://github.com/PetroVoronov/telegram-menu-from-structure/commit/22607308d33ef627efd78060dd1d474b6bfe0367))
+
+
+### Code Refactoring
+
+* `MenuItem.getStringLength` now uses modifier `1.2` for length, to "simulate" different length of symbols during rendering ([2260730](https://github.com/PetroVoronov/telegram-menu-from-structure/commit/22607308d33ef627efd78060dd1d474b6bfe0367))
+* **examples:** Set for examples: `textSummaryMaxLength = 56` and `spaceBetweenColumns = 3` ([2260730](https://github.com/PetroVoronov/telegram-menu-from-structure/commit/22607308d33ef627efd78060dd1d474b6bfe0367))
+
 ## [1.1.6](https://github.com/PetroVoronov/telegram-menu-from-structure/compare/v1.1.5...v1.1.6) (2024-09-30)
 
 
