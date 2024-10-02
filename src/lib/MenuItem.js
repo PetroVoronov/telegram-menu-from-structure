@@ -32,6 +32,7 @@ const menuDefaults = {
     step: 1,
   },
   cmdPrefix: '/',
+  wideCharactersCountCoefficient: 1.25,
 };
 
 /**
@@ -93,7 +94,7 @@ class MenuItem {
         count += 2 - emoji.length; // count emoji as 2 visible characters, despite how many items it contains
       }
     }
-    return Math.round(count * 1.2);
+    return Math.ceil(count * menuDefaults.wideCharactersCountCoefficient);
   }
 
   /**
@@ -656,7 +657,7 @@ class MenuItem {
           if (maxTextLength > 0 && (row.length + 1) * itemLabelMaxLength + row.length * spaceBetweenColumns > maxTextLength) {
             buttons.push(row);
             row = [];
-            itemLabelMaxLength = 0;
+            itemLabelMaxLength = itemLabelLength;
           }
           row.push(item.createButton());
           if ((maxColumns > 0 && row.length === maxColumns) || index === nestedCountCurrent) {
