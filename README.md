@@ -34,6 +34,8 @@ A Telegram menu generation and processing module based on structured data.
     - [New instance of the `MenuItemRoot` class](#new-instance-of-the-menuitemroot-class)
     - [Initialize the menu](#initialize-the-menu)
     - [Receive and process user input](#receive-and-process-user-input-1)
+      - [The example of usage the GramJs library:](#the-example-of-usage-the-gramjs-library)
+      - [The example of usage the Telegraf library:](#the-example-of-usage-the-telegraf-library)
   - [Examples](#examples)
     - [Simple console example aka Demo](#simple-console-example-aka-demo)
     - [Simple Telegram bot example based on Telegraf library](#simple-telegram-bot-example-based-on-telegraf-library)
@@ -136,8 +138,6 @@ There is two examples of the submenu item:
 
 * Object with two fields with data
 
-  <details>
-
   ```javascript
   ...
     structure: {
@@ -181,11 +181,8 @@ There is two examples of the submenu item:
   ```
 
   In this example the `configuration` is a key of the `structure` object. It's a key which will be used to store a data object of the submenu.
-  </details>
 
 * Array of objects with several fields with data
-
-  <details>
 
   ```javascript
   ...
@@ -245,7 +242,6 @@ There is two examples of the submenu item:
   ```
 
   In this example the `items` is a key of the `structure` object. It's a key which will be used to store a data array of the submenu.
-  </details>
 
 ##### Fields of the Submenu Item Object
 
@@ -307,24 +303,28 @@ There are four external function, dependant on the external library to work with
     * `command` - the command that triggers the button
     And should return the button object acceptable by external library to work with Telegram
 * And three functions to interact with Telegram. These functions can be "usual", i.e. synchronous type or "async" type. It depends on the external library to work with Telegram. Please see details below
-  * `sendMessage` - a function that sends the message(Menu) to Telegram
+  * `sendMessage` or `sendMessageAsync` - a function that sends the message(Menu) to Telegram
     It should has three parameters:
-    * `peerId` - the unique identifier of the chat with the user in external library to work with Telegram
+    * `handler` - the unique handler, used by external library to interact with Telegram
     * `messageText` - the text part of the message(Menu)
     * `messageButtons` - the array with a buttons part of the message(Menu)
     And should return the number identifier of the newly sended message(Menu) in Telegram
-  * `editMessage` - a function that edits the the message(Menu) in Telegram
+  * `editMessage`  or `editMessageAsync` - a function that edits the the message(Menu) in Telegram
     It should has four parameters:
-    * `peerId` - the unique identifier of the chat with the user in external library to work with Telegram
+    * `handler` - the unique handler, used by external library to interact with Telegram
     * `messageId` - the number identifier of the message(Menu) in Telegram
     * `messageText` - the text part of the message(Menu)
     * `messageButtons` - the array with a buttons part of the message(Menu)
     And should return the true or false if the message was edited successfully
-  * `deleteMessage` - a function that deletes the message (user input and Menu itself)
+  * `deleteMessage`  or `deleteMessageAsync` - a function that deletes the message (user input and Menu itself)
       It should has two parameters:
-    * `peerId` - the unique identifier of the chat with the user in external library to work with Telegram
+    * `handler` - the unique handler, used by external library to interact with Telegram
     * `messageId` - the number identifier of the message(Menu) in Telegram
     And should return the true or false if the message was deleted successfully
+  * `confirmCallBackQuery`  or `confirmCallBackQueryAsync` - a function that confirms the callback query from the menu button
+    It should has only one parameters
+    * `handler` - the unique handler, used by external library to interact with Telegram
+    And should return the true or false if the callback query was confirmed successfully
 
 
 
@@ -332,7 +332,7 @@ There are four external function, dependant on the external library to work with
 
 The main and only one method to receive and process user input is the method `onCommand` of the `MenuItemRoot` class. There is an async function which should be called on reaction of the external library to work with Telegram when the user sends a message to the bot or pressed a button in the menu.
 It currently has a lot of parameters:
-* `peerId` - the unique identifier of the chat with the user in external library to work with Telegram
+* `handler` - the unique handler, used by external library to interact with Telegram. For details see [Receive and process user input](#receive-and-process-user-input)
 * `userId` - the unique identifier of the user in external library to work with Telegram. Used internally to separate the technical data of different users (like last message id, etc.)
 * `messageId` - the number identifier of the message(Menu) in Telegram
 * `command` - the command which was sent by the user. It can be a command from menu button or an user input to change the value of the menu item
@@ -352,6 +352,7 @@ Is used to initialize the menu. It has only one parameter:
   * `sendMessage` or `sendMessageAsync` - the function that sends the message(Menu) to Telegram. Mandatory
   * `editMessage` or `editMessageAsync` - the function that edits the the message(Menu) in Telegram. Mandatory
   * `deleteMessage` or `deleteMessageAsync` - the function that deletes the message (user input and Menu itself). Mandatory
+  * `confirmCallBackQuery` or `confirmCallBackQueryAsync` - the function that confirms the callback query from the menu button. Mandatory
   * `logLevel` - the level of logging. Can be skipped. It can be one of the following values:
     * `error` - only errors are logged
     * `warning` - errors and warnings are logged
@@ -387,14 +388,17 @@ const makeButton = (label, command) => {
   // Generate the button for Telegram
 };
 
-const sendMessageAsync = async (peerId, messageText, messageButtons) => {
+const sendMessageAsync = async (handler, messageText, messageButtons) => {
   // Send the message to Telegram
 };
-const editMessageAsync = async (peerId, messageId, messageText, messageButtons) => {
+const editMessageAsync = async (handler, messageId, messageText, messageButtons) => {
   // Edit the message in Telegram
 };
-const deleteMessageAsync = async (peerId, messageId) => {
+const deleteMessageAsync = async (handler, messageId) => {
   // Delete the message in Telegram
+};
+const confirmCallBackQueryAsync = async (handler) => {
+  // Confirm the callback query in Telegram
 };
 
 menu.init({
@@ -402,13 +406,15 @@ menu.init({
   sendMessageAsync: sendMessageAsync,
   editMessageAsync: editMessageAsync,
   deleteMessageAsync: deleteMessageAsync,
+  confirmCallBackQueryAsync: confirmCallBackQueryAsync,
   logLevel: 'debug',
   },
 });
 ```
 
 ### Receive and process user input
-There is an example to use the Menu with [GramJs](https://github.com/gram-js/gramjs) library:
+
+#### The example of usage the [GramJs](https://github.com/gram-js/gramjs) library:
 
 ```javascript
 import { MenuItemRoot, menuDefaults } from 'telegram-menu-from-structure';
@@ -428,22 +434,136 @@ menu.init(
   ...
 );
 ...
-client.addEventHandler((event) => {
-  const {peer: peerId, msgId: messageId, data} = event.query;
-  if (data !== undefined) {
-    const command = data.toString();
-    if (command.startsWith(menuDefaults.cmdPrefix)) {
-      menu.onCommand(peerId, peerId.userId, messageId, command, true);
+function parseEvent(event) {
+  let result = null;
+  if (event instanceof CallbackQueryEvent) {
+    const {userId, peer, msgId: messageId, data} = event.query;
+    if (data !== undefined) {
+      result = {userId, peer, messageId, command: data.toString(), isEvent: true};
+    }
+  } else if (event instanceof NewMessageEvent) {
+    const {peerId: peer, id: messageId, message: command} = event.message;
+    if (command !== undefined && peer.userId !== undefined) {
+      result = {userId: peer.userId, peer, messageId, command, isEvent: false};
     }
   }
-}, new CallbackQuery({chats: allowedUsers}));
-
-client.addEventHandler((event) => {
-  const {peerId, id: messageId, message: command} = event.message;
-  menu.onCommand(peerId, peerId.userId, messageId, command, false);
-}, new NewMessage({chats: allowedUsers}));
-
+  return result;
+}
+...
+const sendMessageAsync = async (event, messageText, messageButtons) => {
+  if (client !== null && client.connected === true) {
+    const messageObject = {message: messageText, buttons: messageButtons};
+    const {peer} = parseEvent(event) || {};
+    if (peer !== undefined) {
+      return await client.sendMessage(peer, messageObject);
+    }
+  }
+  return null;
+};
+const editMessageAsync = async (event, messageId, messageText, messageButtons) => {
+  if (client !== null && client.connected === true) {
+    const messageObject = {message: messageId, text: messageText, buttons: messageButtons};
+    const {peer} = parseEvent(event) || {};
+    if (peer !== undefined) {
+      return await client.editMessage(peer, messageObject);
+    }
+  }
+  return null;
+};
+const deleteMessageAsync = async (event, messageId) => {
+  if (client !== null && client.connected === true) {
+    const {peer} = parseEvent(event) || {};
+    if (peer !== undefined) {
+      return await client.deleteMessages(peer, [messageId], {revoke: true});
+    }
+  }
+  return null;
+};
+const confirmCallBackQueryAsync = async (event) => {
+  if (client !== null && client.connected === true) {
+    return await client.answerCallbackQuery(event.query.id);
+  }
+  return null;
+};
+...
+function onCommand(event) {
+  const parsedEvent = parseEvent(event);
+  if (parsedEvent !== null) {
+    const {userId, messageId, command, isEvent} = parsedEvent;
+    if (userId !== undefined && allowedUsers.includes(Number(userId))) {
+      menu.onCommand(event, userId, messageId, command, isEvent);
+    }
+  } else {
+  }
+}
+...
+client.addEventHandler(onCommand, new CallbackQuery({chats: allowedUsers}));
+client.addEventHandler(onCommand, new NewMessage({chats: allowedUsers}));
+...
 ```
+
+As you can see the `event` object is used to interact with the Telegram (`handler`). It is an event object of the GramJs library.
+
+#### The example of usage the [Telegraf](https://github.com/telegraf/telegraf) library:
+
+
+```javascript
+const { Telegraf, Markup } = require('telegraf');
+const { MenuItemRoot, menuDefaults } = require('telegram-menu-from-structure');
+...
+const menu = new MenuItemRoot(menuStructure);
+...
+menu.init(
+  ...
+);
+...
+const bot = new Telegraf(process.env.BOT_TOKEN);
+...
+const makeButton = (label, command) => {
+  return Markup.button.callback(label, command);
+};
+const sendMessageAsync = async (ctx, messageText, messageButtons) => {
+  console.log(`Sending message to ${ctx.chat.id}.`);
+  const sentMessage = await ctx.reply(messageText, {
+    parse_mode: 'HTML',
+    ...Markup.inlineKeyboard(messageButtons),
+  });
+};
+const editMessageAsync = async (ctx, messageId, messageText, messageButtons) => {
+  console.log(`Message with id ${messageId} to ${ctx.chat.id} is edited.`);
+  await ctx.editMessageText(messageText, {
+    message_id: messageId,
+    parse_mode: 'HTML',
+    ...Markup.inlineKeyboard(messageButtons),
+  });
+};
+const deleteMessageAsync = async (ctx, menuMessageId) => {
+  console.log(
+    'Deleting message:',
+    menuMessageId,
+    'from',
+    menuMessageId === data[`menuMessageId.${ctx.chat.id}`] ? 'bot' : `user "${ctx.from.id}".`,
+  );
+  await ctx.deleteMessage(menuMessageId);
+};
+const confirmCallBackQueryAsync = async (ctx) => {
+  console.log('Confirming callback query:', ctx.callbackQuery.id);
+  return await ctx.answerCbQuery();
+};
+...
+bot.on(message('text'), (ctx) => {
+  const message = ctx.message;
+  menu.onCommand(ctx, message.chat.id, message.message_id, message.text, false);
+  return true;
+});
+bot.on(callbackQuery('data'), (ctx) => {
+  const callback = ctx.callbackQuery;
+  menu.onCommand(ctx, callback.message.chat.id, callback.message.message_id, callback.data, true);
+  return true;
+});
+```
+As you can see the `ctx` object is used to interact with the Telegram (`handler`). It is a context object of the Telegraf library.
+
 
 ## Examples
 
@@ -555,6 +675,7 @@ Additional logging will be shown in the console. You can see the what is happeni
 
 Notes:
 - If you receive errors on start, or try to use "local" mode or update an dependencies, please run `npm install`  or `npm update` to install or update the required packages.
+
 
 ## Testing
 

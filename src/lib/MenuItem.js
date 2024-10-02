@@ -401,16 +401,24 @@ class MenuItem {
       if (typeof configuration.removeValue === 'function') {
         this.#removeValue = configuration.removeValue;
       }
-      if (typeof configuration.columnsMaxCount.default === 'number') {
+      if (typeof configuration.columnsMaxCount === 'number') {
+        this.columnsMaxCount = configuration.columnsMaxCount;
+      } else if (typeof configuration.columnsMaxCount?.default === 'number') {
         this.columnsMaxCount = configuration.columnsMaxCount.default;
       }
-      if (typeof configuration.textSummaryMaxLength.default === 'number') {
+      if (typeof configuration.textSummaryMaxLength === 'number') {
+        this.textSummaryMaxLength = configuration.textSummaryMaxLength;
+      } else if (typeof configuration.textSummaryMaxLength?.default === 'number') {
         this.textSummaryMaxLength = configuration.textSummaryMaxLength.default;
       }
-      if (typeof configuration.spaceBetweenColumns.default === 'number') {
+      if (typeof configuration.spaceBetweenColumns === 'number') {
+        this.spaceBetweenColumns = configuration.spaceBetweenColumns;
+      } else if (typeof configuration.spaceBetweenColumns?.default === 'number') {
         this.spaceBetweenColumns = configuration.spaceBetweenColumns.default;
       }
-      if (typeof configuration.buttonsMaxCount.default === 'number') {
+      if (typeof configuration.buttonsMaxCount === 'number') {
+        this.buttonsMaxCount = configuration.buttonsMaxCount;
+      } else if (typeof configuration.buttonsMaxCount?.default === 'number') {
         this.buttonsMaxCount = configuration.buttonsMaxCount.default;
       }
     }
@@ -760,6 +768,19 @@ class MenuItem {
   }
 
   /**
+   * Delete message
+   * @param {string} peerId - Peer Id
+   **/
+  async confirmCallBackQuery(peerId) {
+    const root = this.getRoot();
+    if (root) {
+      return root.confirmCallBackQuery(peerId);
+    } else {
+      throw new Error('Root is not found!');
+    }
+  }
+
+  /**
    * Draw menu item
    * @param {any} peerId - Peer Id
    * @param {number} userId - User Id
@@ -832,6 +853,9 @@ class MenuItem {
    **/
   async onCommand(peerId, userId, messageId, command, isEvent = true, isTarget = false) {
     const menuMessageId = this.getMessageId(userId);
+    if (isEvent === true && this.isRoot === true) {
+      this.confirmCallBackQuery(peerId);
+    }
     this.log('debug', `command: ${command}, peerId = ${stringify(peerId)}, startsWith: ${command?.startsWith(menuDefaults.cmdPrefix)}`);
     if (isTarget === true) {
       if (isEvent === false && messageId !== 0) {

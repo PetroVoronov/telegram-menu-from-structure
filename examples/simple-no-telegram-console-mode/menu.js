@@ -205,14 +205,14 @@ function printMessage(messageObject) {
   });
 }
 
-const peer = 'user';
+const handler = 'user';
 const userId = 'test';
 
 async function sendMessageToBot(message) {
   userMessageId++;
   buttons.splice(0, buttons.length);
   console.clear();
-  await menuRoot.onCommand(peer, userId, userMessageId, message, false);
+  await menuRoot.onCommand(handler, userId, userMessageId, message, false);
 }
 
 async function pressButton(label) {
@@ -222,7 +222,7 @@ async function pressButton(label) {
         if (button.label === label) {
           buttons.splice(0, buttons.length);
           console.clear();
-          await menuRoot.onCommand(peer, userId, botMessageId, button.command, true);
+          await menuRoot.onCommand(handler, userId, botMessageId, button.command, true);
           return button.command !== '/exit';
         }
       }
@@ -233,21 +233,25 @@ async function pressButton(label) {
 async function example() {
   await menuRoot.init({
     makeButton: (label, command) => ({label, command}),
-    sendMessage: (peerId, messageText, messageButtons) => {
-      console.log(`Sending message to ${peerId}:`);
+    sendMessage: (handler, messageText, messageButtons) => {
+      console.log(`Sending message to ${handler}:`);
       lastMessageObject = {message: messageText, buttons: messageButtons};
       printMessage(lastMessageObject);
       botMessageId++;
       return botMessageId;
     },
-    editMessage: (peerId, messageId, messageText, messageButtons) => {
-      console.log(`Message with id ${messageId} to ${peerId} is edited:`);
+    editMessage: (handler, messageId, messageText, messageButtons) => {
+      console.log(`Message with id ${messageId} to ${handler} is edited:`);
       lastMessageObject = {message: messageText, buttons: messageButtons};
       printMessage(lastMessageObject);
       return true;
     },
-    deleteMessage: (peerId, menuMessageId) => {
+    deleteMessage: (handler, menuMessageId) => {
       console.log('Deleting message:', menuMessageId, 'from', menuMessageId === userMessageId ? `user "${userId}"` : 'bot');
+      return true;
+    },
+    confirmCallBackQuery: (handler) => {
+      console.log('Confirming callback query:', handler);
       return true;
     },
     logLevel: 'info',

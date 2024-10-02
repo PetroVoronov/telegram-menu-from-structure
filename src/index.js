@@ -20,10 +20,12 @@ class MenuItemRoot extends MenuItem {
   #sendMessage = null;
   #editMessage = null;
   #deleteMessage = null;
+  #confirmCallBackQuery = null;
 
   #sendMessageAsync = null;
   #editMessageAsync = null;
   #deleteMessageAsync = null;
+  #confirmCallBackQueryAsync = null;
 
   constructor(menuStructure) {
     super(menuStructure.label, `/${menuStructure.id}`, menuStructure.text || menuStructure.label);
@@ -69,14 +71,26 @@ class MenuItemRoot extends MenuItem {
     }
   }
 
+  async confirmCallBackQuery(peerId) {
+    if (typeof this.#confirmCallBackQuery === 'function') {
+      return this.#confirmCallBackQuery(peerId);
+    } else if (typeof this.#confirmCallBackQueryAsync === 'function') {
+      return await this.#confirmCallBackQueryAsync(peerId);
+    } else {
+      throw new Error('confirmCallBackQuery is not set');
+    }
+  }
+
   async init({
     makeButton,
     sendMessage,
     editMessage,
     deleteMessage,
+    confirmCallBackQuery,
     sendMessageAsync,
     editMessageAsync,
     deleteMessageAsync,
+    confirmCallBackQueryAsync,
     logLevel = '',
     logger = null,
     i18n = null,
@@ -106,6 +120,10 @@ class MenuItemRoot extends MenuItem {
       this.#deleteMessage = deleteMessage;
       this.log('debug', 'deleteMessage is set');
     }
+    if (typeof confirmCallBackQuery === 'function') {
+      this.#confirmCallBackQuery = confirmCallBackQuery;
+      this.log('debug', 'confirmCallBackQuery is set');
+    }
     if (typeof sendMessageAsync === 'function') {
       this.#sendMessageAsync = sendMessageAsync;
       this.log('debug', 'sendMessageAsync is set');
@@ -117,6 +135,10 @@ class MenuItemRoot extends MenuItem {
     if (typeof deleteMessageAsync === 'function') {
       this.#deleteMessageAsync = deleteMessageAsync;
       this.log('debug', 'deleteMessageAsync is set');
+    }
+    if (typeof confirmCallBackQueryAsync === 'function') {
+      this.#confirmCallBackQueryAsync = confirmCallBackQueryAsync;
+      this.log('debug', 'confirmCallBackQueryAsync is set');
     }
     for (const key of Object.keys(this.rootStructure.structure)) {
       const item = this.rootStructure.structure[key];

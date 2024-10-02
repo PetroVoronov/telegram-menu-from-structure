@@ -220,6 +220,10 @@ async function example() {
         await ctx.deleteMessage(menuMessageId);
         return true;
       },
+      confirmCallBackQueryAsync: async (ctx) => {
+        console.log('Confirming callback query:', ctx.callbackQuery.id);
+        return await ctx.answerCbQuery();
+      },
       logLevel: 'info',
     });
     bot.launch();
