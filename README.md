@@ -480,8 +480,8 @@ const deleteMessageAsync = async (event, messageId) => {
   return null;
 };
 const confirmCallBackQueryAsync = async (event) => {
-  if (client !== null && client.connected === true) {
-    return await client.answerCallbackQuery(event.query.id);
+  if (client !== null && client.connected === true && typeof event?.query?.queryId !== undefined) {
+    return await event.answer();
   }
   return null;
 };

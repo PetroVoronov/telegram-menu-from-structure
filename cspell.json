@@ -15,6 +15,7 @@
         "preversion",
         "sonarjs",
         "strftime",
+        "typeof",
         "Voronov",
         "whatwg"
     ],
