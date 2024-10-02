@@ -46,7 +46,21 @@ const menuStructure = {
     getValue: (key, type) => data[key],
     setValue: (key, value, type) => (data[key] = value),
     removeValue: (key) => delete data[key],
-    ...menuDefaults,
+    ...{
+      ...menuDefaults,
+      textSummaryMaxLength: {
+        default: 56,
+        min: 0,
+        max: 100,
+        step: 1,
+      },
+      spaceBetweenColumns: {
+        default: 3,
+        min: 1,
+        max: 10,
+        step: 1,
+      },
+    },
   },
   structure: {
     configuration: {

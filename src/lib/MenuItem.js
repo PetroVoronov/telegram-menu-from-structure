@@ -90,10 +90,10 @@ class MenuItem {
       count = string.length;
       for (const match of string.matchAll(emojiRegex)) {
         const emoji = match[0];
-        count += 2 - emoji.length;
+        count += 2 - emoji.length; // count emoji as 2 visible characters, despite how many items it contains
       }
     }
-    return count;
+    return Math.round(count * 1.2);
   }
 
   /**
@@ -401,17 +401,17 @@ class MenuItem {
       if (typeof configuration.removeValue === 'function') {
         this.#removeValue = configuration.removeValue;
       }
-      if (typeof configuration.columnsMaxCount === 'number') {
-        this.columnsMaxCount = configuration.columnsMaxCount;
+      if (typeof configuration.columnsMaxCount.default === 'number') {
+        this.columnsMaxCount = configuration.columnsMaxCount.default;
       }
-      if (typeof configuration.textSummaryMaxLength === 'number') {
-        this.textSummaryMaxLength = configuration.textSummaryMaxLength;
+      if (typeof configuration.textSummaryMaxLength.default === 'number') {
+        this.textSummaryMaxLength = configuration.textSummaryMaxLength.default;
       }
-      if (typeof configuration.spaceBetweenColumns === 'number') {
-        this.spaceBetweenColumns = configuration.spaceBetweenColumns;
+      if (typeof configuration.spaceBetweenColumns.default === 'number') {
+        this.spaceBetweenColumns = configuration.spaceBetweenColumns.default;
       }
-      if (typeof configuration.buttonsMaxCount === 'number') {
-        this.buttonsMaxCount = configuration.buttonsMaxCount;
+      if (typeof configuration.buttonsMaxCount.default === 'number') {
+        this.buttonsMaxCount = configuration.buttonsMaxCount.default;
       }
     }
   }
