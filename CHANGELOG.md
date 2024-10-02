@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.3.1](https://github.com/PetroVoronov/telegram-menu-from-structure/compare/v1.3.0...v1.3.1) (2024-10-02)
+
+
+### Bug Fixes
+
+* Fixed menu row total text length calculation. Previously the length of first item in row is some cases not accounted ... ([2b6d380](https://github.com/PetroVoronov/telegram-menu-from-structure/commit/2b6d380a8f76092e1a1b2392001f367c502f3395))
+
+
+### Documentation
+
+* Fix example of code to work with GramJS - `confirmCallBackQueryAsync` code ([1ca2f6a](https://github.com/PetroVoronov/telegram-menu-from-structure/commit/1ca2f6ade722e8d12b160c38278fa321f26adf7f))
+
 ## [1.3.0](https://github.com/PetroVoronov/telegram-menu-from-structure/compare/v1.2.0...v1.3.0) (2024-10-02)
 
 
