@@ -1,5 +1,22 @@
 # Changelog
 
+## [1.3.0](https://github.com/PetroVoronov/telegram-menu-from-structure/compare/v1.2.0...v1.3.0) (2024-10-02)
+
+
+### Features
+
+* Add confirmCallBackQuery functionality ([4cefc72](https://github.com/PetroVoronov/telegram-menu-from-structure/commit/4cefc72be8616a18b3fd25b4243eb6af791e97bf))
+
+
+### Code Refactoring
+
+* Improve `config` method ([4cefc72](https://github.com/PetroVoronov/telegram-menu-from-structure/commit/4cefc72be8616a18b3fd25b4243eb6af791e97bf))
+
+
+### Documentation
+
+* Improving the code examples in README.md ([4cefc72](https://github.com/PetroVoronov/telegram-menu-from-structure/commit/4cefc72be8616a18b3fd25b4243eb6af791e97bf))
+
 ## [1.2.0](https://github.com/PetroVoronov/telegram-menu-from-structure/compare/v1.1.7...v1.2.0) (2024-10-02)
 
 
