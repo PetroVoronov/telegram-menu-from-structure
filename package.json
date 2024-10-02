@@ -1,6 +1,6 @@
 {
   "name": "telegram-menu-from-structure",
-  "version": "1.1.6",
+  "version": "1.1.7",
   "description": "There is a Telegram menu generation and processing module based on structured data",
   "main": "dist/index.js",
   "scripts": {
