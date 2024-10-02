@@ -7,7 +7,6 @@ const {
   MenuButtonInputInteger,
   MenuButtonNewItem,
   MenuButtonListTyped,
-  MenuButtonListTypedAsync,
   MenuButtonDeleteItem,
 } = require('./MenuButton');
 
@@ -483,10 +482,34 @@ class MenuItemStructured extends MenuItem {
               break;
             }
             case 'list': {
+              const listOptions = {
+                type: structureItem.type,
+                extraRefresh: structureItem.extraRefresh === true,
+              };
               if (typeof structureItem.sourceAsync === 'function') {
-                item = new MenuButtonListTypedAsync(label, command, text, structureItem.sourceAsync, structureItem.type, group);
+                item = new MenuButtonListTyped(
+                  label,
+                  command,
+                  text,
+                  structureItem.sourceAsync,
+                  {
+                    isAsync: true,
+                    ...listOptions,
+                  },
+                  group,
+                );
               } else {
-                item = new MenuButtonListTyped(label, command, text, structureItem.source, structureItem.type, group);
+                item = new MenuButtonListTyped(
+                  label,
+                  command,
+                  text,
+                  structureItem.source,
+                  {
+                    isAsync: false,
+                    ...listOptions,
+                  },
+                  group,
+                );
               }
               break;
             }

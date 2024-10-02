@@ -1,4 +1,4 @@
-# Telegram Menu generated from Structure
+# Telegram Menu Automated
 
 ![NPM Version](https://img.shields.io/npm/v/telegram-menu-from-structure)
 ![NPM Downloads](https://img.shields.io/npm/d18m/telegram-menu-from-structure)
@@ -12,7 +12,7 @@ A Telegram menu generation and processing module based on structured data.
 
 ## Table of Contents
 
-- [Telegram Menu generated from Structure](#telegram-menu-generated-from-structure)
+- [Telegram Menu Automated](#telegram-menu-automated)
   - [About](#about)
   - [Table of Contents](#table-of-contents)
   - [Installation](#installation)
@@ -285,13 +285,17 @@ This object can have the following fields:
 * `sourceType` - string, the source type of the field. It can be one of the following values:
   * `list` - the field is a list of values
   * `input` - the field is an input field, i.e. the user can enter a value by sending a message to the bot on request
-* `source` - function, a function that returns the source of the field. It is used for the `list` source type. Should return a Map object with the values of the list
+* `source` or `sourceAsync` function - a function that returns the source of the field. It is used for the `list` source type. Should return a Map object with the values of the list. As argument it receives the data of the submenu item and `force` boolean flag. If `force` is true, the source should be deeply refreshed. `Force` is used only if the flag `extraRefresh` is set to `true` - see below.
+* `extraRefresh` - boolean, if true, the source can be deeply refreshed. As result the additional button "Refresh" will be shown in the bottom of the list of the values. It will be used to do a deep refresh of the source. The source function should be able to process the `force` flag.
 * `onSetBefore` - function, a function that is called before the value of the field is set. It can be used to check the value of the field before it is set
 * `onSetAfter` - function, a function that is called after the value of the field is set
 * `onSetReset` - array, an array of fields that should be reset when the value of the field is changed
 * `default` - any, the default value of the field
 * `label` - string, the label of the field
 * `text` - string, the text of the field
+
+
+**Note**: only one of the `source` or `sourceAsync` should be defined. If both are defined, the `sourceAsync` will be used.
 
 ### External functions to interact with Telegram
 

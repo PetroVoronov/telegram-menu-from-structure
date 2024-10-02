@@ -10,15 +10,43 @@ const {MenuItemRoot, menuDefaults} = useLocal ? require('../../src/index') : req
 
 const data = {};
 
-const getLanguages = () => {
-  return new Map([
-    ['en', 'English'],
-    ['de', 'German'],
-    ['es', 'Spanish'],
-    ['fr', 'French'],
-    ['uk', 'Ukrainian'],
-  ]);
+let languages;
+const getLanguages = (data, force) => {
+  if (languages === undefined) {
+    languages = new Map([
+      ['en', 'English'],
+      ['de', 'German'],
+      ['es', 'Spanish'],
+      ['fr', 'French'],
+      ['uk', 'Ukrainian'],
+    ]);
+  }
+  if (force) {
+    const lastKey = languages.size === 5 ? 'ro' : Array.from(languages)[languages.size - 1][0];
+    switch (lastKey) {
+      case 'ro':
+        languages.delete('ro');
+        languages.set('jp', 'Japanese');
+        break;
+      case 'jp':
+        languages.delete('jp');
+        languages.set('it', 'Italian');
+        break;
+      case 'it':
+        languages.delete('it');
+        languages.set('pl', 'Polish');
+        break;
+      case 'pl':
+        languages.delete('pl');
+        languages.set('ro', 'Romanian');
+        break;
+      default:
+        break;
+    }
+  }
+  return languages;
 };
+
 const onLanguageChange = (currentItem, key, data, path) => {
   logMenu('Language changed to:', data[key]);
   return true;
@@ -75,6 +103,7 @@ const menuStructure = {
             editable: true,
             sourceType: 'list',
             source: getLanguages,
+            extraRefresh: true,
             onSetAfter: onLanguageChange,
             default: 'en',
             label: 'Menu language',

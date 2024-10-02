@@ -560,6 +560,7 @@ class MenuItem {
       const buttonsOffset = isNaN(matchOffset?.groups?.offset) ? 0 : parseInt(matchOffset.groups.offset);
       commandToCheck = command.replace(`$bo=${buttonsOffset}`, '');
       this.setValue('buttonsOffset', buttonsOffset, chatId);
+      commandToCheck = commandToCheck.split('$extra=').shift();
     }
     if (this.command === commandToCheck || (this.isRoot && commandToCheck === MenuItem.cmdExit)) {
       if (this.isRoot && commandToCheck === MenuItem.cmdExit) {
@@ -678,6 +679,10 @@ class MenuItem {
         row = [];
       }
     }
+    const bottomRow = this.getBottomRow();
+    if (Array.isArray(bottomRow) && bottomRow.length > 0) {
+      buttons.push(bottomRow);
+    }
     row.push(this.makeButton(this.i18nTranslate('Exit'), MenuItem.cmdExit));
     if (this.holder !== null) {
       if (this.getRoot().command !== this.holder.command) {
@@ -688,6 +693,15 @@ class MenuItem {
     buttons.push(row);
     return buttons;
   }
+
+  /**
+   * Get bottom row
+   * @returns {Array<Button>} - Bottom row
+   **/
+  getBottomRow() {
+    return [];
+  }
+
 
   /**
    * Refresh menu item

@@ -310,28 +310,28 @@ class MenuButtonListTyped extends MenuButton {
    * @param {string|function} command - The command to execute
    * @param {string|function} text - The text to display
    * @param {map|function} list - The function to get the list
-   * @param {string} type - The type of the list item
    * @param {object} options - The options of item
    * @param {string} group - The group to add the item to
    */
-  constructor(label, command, text, list, type = 'string', group = '') {
+  constructor(label, command, text, list, options = {isAsync: false, type: 'string', extraRefresh: false}, group = '') {
     super(label, command, text, group);
     if (typeof list === 'function') {
       this.getList = list;
     } else if (typeof list === 'object' && list instanceof Map) {
       this.list = list;
     }
-    this.type = type;
-    this.isAsync = false;
+    this.isAsync = options?.isAsync || false;
+    this.type = options?.type || 'string';
+    this.extraRefresh = options?.extraRefresh || false;
   }
 
-  async updateList() {
+  async updateList(force = false) {
     if (typeof this.getList === 'function') {
       const data = this.getData(`${this.command.split('?')[0]}?`);
       if (this.isAsync === true) {
-        this.list = await this.getList(data);
+        this.list = await this.getList(data, force);
       } else {
-        this.list = this.getList(data);
+        this.list = this.getList(data, force);
       }
     }
   }
@@ -408,23 +408,41 @@ class MenuButtonListTyped extends MenuButton {
     }
     return await super.setData(data, command);
   }
-}
 
-class MenuButtonListTypedAsync extends MenuButtonListTyped {
   /**
-   * @param {string|function} label - The label of the item
-   * @param {string|function} command - The command to execute
-   * @param {string|function} text - The text to display
-   * @param {map|function} list - The function to get the list
-   * @param {string} type - The type of the list item
-   * @param {object} options - The options of item
-   * @param {string} group - The group to add the item to
-   */
-  constructor(label, command, text, list, type = 'string', group = '') {
-    super(label, command, text, list, type, group);
-    this.isAsync = true;
+   * Handle command
+   * @param {any} peerId - Peer Id
+   * @param {number} userId - Message Id
+   * @param {number} messageId - Message Id
+   * @param {string} command - Command to handle
+   * @param {boolean=} isEvent - True if the command is event, false otherwise
+   * @param {boolean=} isTarget - True if the command is target, false otherwise
+   **/
+  async onCommand(peerId, userId, messageId, command, isEvent = true, isTarget = false) {
+    if (isTarget === false || this.holder === null) {
+      await super.onCommand(peerId, userId, messageId, command, isEvent, isTarget);
+    } else {
+      const extraCommand = command.split('$extra=').pop();
+      if (extraCommand === 'refresh') {
+        await this.updateList(true);
+        await this.draw(peerId, userId);
+      } else {
+        await super.onCommand(peerId, userId, messageId, command, isEvent, isTarget);
+      }
+    }
+  }
+
+  /**
+   * Get bottom row
+   * @returns {Array<Button>} - Bottom row
+   **/
+  getBottomRow() {
+    if (this.extraRefresh === true && typeof this.getList === 'function') {
+      return [this.makeButton(this.i18nTranslate('Refresh'), `${this.command}$extra=refresh`)];
+    }
   }
 }
+
 class MenuButtonListItem extends MenuButton {
   constructor(key, value, current = false, group = '') {
     super(value, '', value, group);
@@ -486,6 +504,5 @@ module.exports = {
   MenuButtonInputInteger,
   MenuButtonNewItem,
   MenuButtonListTyped,
-  MenuButtonListTypedAsync,
   MenuButtonDeleteItem,
 };
