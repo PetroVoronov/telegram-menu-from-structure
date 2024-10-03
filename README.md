@@ -1,7 +1,7 @@
 # Telegram Menu Automated
 
-![NPM Version](https://img.shields.io/npm/v/telegram-menu-from-structure)
-![NPM Downloads](https://img.shields.io/npm/d18m/telegram-menu-from-structure)
+[![NPM Version](https://img.shields.io/npm/v/telegram-menu-from-structure)](https://www.npmjs.com/package/telegram-menu-from-structure)
+[![NPM Downloads](https://img.shields.io/npm/d18m/telegram-menu-from-structure)](https://www.npmjs.com/package/telegram-menu-from-structure)
 [![GitHub license](https://img.shields.io/github/license/PetroVoronov/telegram-menu-from-structure)](LICENSE)
 [![GitHub last commit](https://img.shields.io/github/last-commit/PetroVoronov/telegram-menu-from-structure)](https://github.com/PetroVoronov/telegram-menu-from-structure/commits/main)
 [![GitHub issues](https://img.shields.io/github/issues/PetroVoronov/telegram-menu-from-structure)](https://github.com/PetroVoronov/telegram-menu-from-structure/issues)
