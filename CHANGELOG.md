@@ -1,5 +1,24 @@
 # Changelog
 
+## [1.3.2](https://github.com/PetroVoronov/telegram-menu-from-structure/compare/v1.3.1...v1.3.2) (2024-10-04)
+
+
+### Code Refactoring
+
+* **MEnuITemStructured:** Refactor submenu item structure functions and parameters ([ad9269b](https://github.com/PetroVoronov/telegram-menu-from-structure/commit/ad9269be70869df14e15215c3f1263aebd85c3d0))
+
+
+### Build System
+
+* **deps-dev:** bump @babel/core from 7.25.2 to 7.25.7 ([abc915a](https://github.com/PetroVoronov/telegram-menu-from-structure/commit/abc915a7050378fe3408722dff366c433b835440))
+* **deps-dev:** Update @babel/cli, @babel/core, and @babel/eslint-parser to version 7.25.7 ([798d36f](https://github.com/PetroVoronov/telegram-menu-from-structure/commit/798d36f34f20c92179fc460afa5bc8458394fcec))
+
+
+### Documentation
+
+* **Structure:** Made a detailed description a functions in structure ([ad9269b](https://github.com/PetroVoronov/telegram-menu-from-structure/commit/ad9269be70869df14e15215c3f1263aebd85c3d0))
+* Update npm badge links in README.md ([e02afa8](https://github.com/PetroVoronov/telegram-menu-from-structure/commit/e02afa874ed316f201eeee139be1d4e01a0a8ecd))
+
 ## [1.3.1](https://github.com/PetroVoronov/telegram-menu-from-structure/compare/v1.3.0...v1.3.1) (2024-10-02)
 
 
