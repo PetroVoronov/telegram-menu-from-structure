@@ -258,10 +258,10 @@ There is only one field for `object` type:
 
 ###### Fields of the Submenu Item `structure` Object for `array` type
 There is several additional fields for `array` type:
-* `primaryId` - string with Id of any field of the submenu item. Or function which will return the Id based on the data of the submenu item.
+* `primaryId` string or function - used for the identification of the submenu item. As `function(data, isShort)` which will return the Id based on the data of the submenu item.
 * label - string, the label of the submenu item
 These two above fields are used to generate header of the submenu item.
-* `text` - string with the text of the submenu item header. Or function which will return the text based on the data of the submenu item.
+* `text` string or function - the text of the submenu item header. As `function(data)` which will return the text based on the data of the submenu item.
 * `plain` - boolean, if true, the submenu items will be shown as single buttons, otherwise they will be shown as a list of buttons.
 There is some specifics of "plain" structures - they are is objects too, but with one predefined field `value` which is a value of the submenu item.
 * `itemContent` - object, the structure of the submenu item. Each key of the object is a field of the submenu item. The value of the key is an object that describes the field of the submenu item.
@@ -281,15 +281,29 @@ This object can have the following fields:
 * `sourceType` - string, the source type of the field. It can be one of the following values:
   * `list` - the field is a list of values
   * `input` - the field is an input field, i.e. the user can enter a value by sending a message to the bot on request
-* `source` or `sourceAsync` function - a function that returns the source of the field. It is used for the `list` source type. Should return a Map object with the values of the list. As argument it receives the data of the submenu item and `force` boolean flag. If `force` is true, the source should be deeply refreshed. `Force` is used only if the flag `extraRefresh` is set to `true` - see below.
+* `source` or `sourceAsync` function - a `function (data, force)` that returns the source of the field. It is used for the `list` source type. Should return a Map object with the values of the list. As argument it receives the `data` of the submenu item and `force` boolean flag. If `force` is true, the source should be deeply refreshed. `Force` is used only if the flag `extraRefresh` is set to `true` - see below.
 * `extraRefresh` - boolean, if true, the source can be deeply refreshed. As result the additional button "Refresh" will be shown in the bottom of the list of the values. It will be used to do a deep refresh of the source. The source function should be able to process the `force` flag.
-* `onSetBefore` - function, a function that is called before the value of the field is set. It can be used to check the value of the field before it is set
-* `onSetAfter` - function, a function that is called after the value of the field is set
+* `onSetBefore` function - a `function (data, key, value, path)` that is called before the value of the field is set. It can be used to check the value of the field before it is set
+* `onSetAfter` function, a `function (data, key, path)` that is called after the value of the field is set
 * `onSetReset` - array, an array of fields that should be reset when the value of the field is changed
 * `default` - any, the default value of the field
-* `label` - string, the label of the field
-* `text` - string, the text of the field
+* `label` string or function - the label of the field. In case of `function (data)` it should return the appropriate string value based on the data of the submenu item
+* `text` string or function - the text of the field. In case of `function (data)` it should return the appropriate string value based on the data of the submenu item
 
+Explanation of the functions parameters and return values:
+* For `onSetBefore` and `onSetAfter` functions:
+  * `data` - the current value of the submenu item, including all fields
+  * `key` - the key of the field
+  * `value` - the new value of the field (used only for `onSetBefore`)
+  * `path` - array of keys as a path to the field in the submenu item, including the key of the field as the last element
+  `onSetBefore` function should return `true` if the value of the field is correct and should be set, otherwise it should return `false`
+* for `primaryId`:
+  * `data` - the current value of the submenu item, including all fields
+  * `isShort` - boolean, if true, the short version of the text should be returned. It is used to generate the header of the submenu item
+  Return value should be a string with the Id of the submenu item
+* for `label` and `text`:
+  * `data` - the current value of the submenu item, including all fields
+  Return value should be a string with the label or text of the submenu item
 
 **Note**: only one of the `source` or `sourceAsync` should be defined. If both are defined, the `sourceAsync` will be used.
 

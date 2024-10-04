@@ -369,7 +369,7 @@ class MenuItemStructured extends MenuItem {
                   ) {
                     if (
                       typeof currentStructure[key].onSetBefore !== 'function' ||
-                      currentStructure[key].onSetBefore(currentItem, key, dataItem, path) === true
+                      currentStructure[key].onSetBefore(currentItem, key, data, path) === true
                     ) {
                       if (this.structure.plain === true && params === 'value') {
                         if (index >= 0 && this.isArray === true && index < this.data.length) {
@@ -407,7 +407,7 @@ class MenuItemStructured extends MenuItem {
                         });
                       }
                       if (typeof currentStructure[key].onSetAfter === 'function') {
-                        currentStructure[key].onSetAfter(currentItem, key, dataItem, path);
+                        currentStructure[key].onSetAfter(currentItem, key, data, path);
                       }
                       this.save();
                       return true;
