@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.3.3](https://github.com/PetroVoronov/telegram-menu-from-structure/compare/v1.3.2...v1.3.3) (2024-10-05)
+
+
+### Documentation
+
+* enhance README with detailed module description and project references ([c524ab6](https://github.com/PetroVoronov/telegram-menu-from-structure/commit/c524ab60adbf7b9f63b64a9f2ae5abe57bd0d4a7))
+
 ## [1.3.2](https://github.com/PetroVoronov/telegram-menu-from-structure/compare/v1.3.1...v1.3.2) (2024-10-04)
 
 
