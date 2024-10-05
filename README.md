@@ -8,12 +8,23 @@
 [![GitHub pull requests](https://img.shields.io/github/issues-pr/PetroVoronov/telegram-menu-from-structure)](https://github.com/PetroVoronov/telegram-menu-from-structure/pulls)
 
 ## About
-A Telegram menu generation and processing module based on structured data.
+
+`Telegram Menu Automated`(telegram-menu-from-structure) is a powerful module designed to simplify the creation and management of Telegram menus based on structured data. This module allows developers to define complex menu structures using JavaScript objects, making it easy to generate dynamic and interactive Telegram bot interfaces.
+
+With `Telegram Menu Automated`, you can create nested menus, handle user inputs, and interact with Telegram seamlessly. The module supports various data types, including booleans, strings, numbers, and arrays, and provides a flexible way to manage menu items and their states.
+
+Whether you are building a simple bot or a complex application, `Telegram Menu Automated` offers the tools you need to create intuitive and user-friendly Telegram menus.
+
+## Changelog
+
+See the [CHANGELOG](https://github.com/PetroVoronov/telegram-menu-from-structure/blob/main/CHANGELOG.md)
+
 
 ## Table of Contents
 
 - [Telegram Menu Automated](#telegram-menu-automated)
   - [About](#about)
+  - [Changelog](#changelog)
   - [Table of Contents](#table-of-contents)
   - [Installation](#installation)
   - [Key Features](#key-features)
@@ -39,8 +50,8 @@ A Telegram menu generation and processing module based on structured data.
   - [Examples](#examples)
     - [Simple console example aka Demo](#simple-console-example-aka-demo)
     - [Simple Telegram bot example based on Telegraf library](#simple-telegram-bot-example-based-on-telegraf-library)
+  - [Projects uses the Telegram Menu Automated](#projects-uses-the-telegram-menu-automated)
   - [Testing](#testing)
-  - [Changelog](#changelog)
   - [Contributing](#contributing)
   - [License](#license)
 
@@ -691,6 +702,17 @@ Notes:
 - If you receive errors on start, or try to use "local" mode or update an dependencies, please run `npm install`  or `npm update` to install or update the required packages.
 
 
+## Projects uses the Telegram Menu Automated
+
+Here are some projects that utilize `Telegram Menu Automated`:
+
+- **Telegram Forward User Bot**
+   - Description: A Telegram user bot that forwards messages between chats, groups, and channels using MTProto ([gram-js/gramjs](https://github.com/gram-js/gramjs)). Fully configurable via an intuitive bot menu.
+   - Repository: [GitHub Link](https://github.com/PetroVoronov/telegram-forward-user-bot)
+
+If you have a project that uses `Telegram Menu Automated`, feel free to submit a pull request to add it to this list!
+
+
 ## Testing
 
 To run tests, use the following command:
@@ -699,10 +721,6 @@ To run tests, use the following command:
 npm test
 ```
 The tests are written using Jest and can be found in the `test` directory.
-
-## Changelog
-
-See the [CHANGELOG](https://github.com/PetroVoronov/telegram-menu-from-structure/blob/main/CHANGELOG.md)
 
 ## Contributing
 
