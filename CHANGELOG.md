@@ -1,5 +1,19 @@
 # Changelog
 
+## [1.3.4](https://github.com/PetroVoronov/telegram-menu-from-structure/compare/v1.3.3...v1.3.4) (2024-10-07)
+
+### Continuous Integration
+
+* **release-please:** run CHANGELOG.md through markdownlint-cli2 on PR's ([04afe77](https://github.com/PetroVoronov/telegram-menu-from-structure/commit/04afe77149f214dcc42d0df7144fe516f1e0c7e9))
+
+### Miscellaneous Chores
+
+* **dev:** Add markdownlint-cli2 to improve format of documentation (README.md, CHANGELOG.md) ([04afe77](https://github.com/PetroVoronov/telegram-menu-from-structure/commit/04afe77149f214dcc42d0df7144fe516f1e0c7e9))
+
+### Documentation
+
+* Fix README and CHANGELOG.md formatting through markdownlint-cli2 ([04afe77](https://github.com/PetroVoronov/telegram-menu-from-structure/commit/04afe77149f214dcc42d0df7144fe516f1e0c7e9))
+
 ## [1.3.3](https://github.com/PetroVoronov/telegram-menu-from-structure/compare/v1.3.2...v1.3.3) (2024-10-05)
 
 ### Documentation
