@@ -1,5 +1,40 @@
 # Changelog
 
+## [1.3.5](https://github.com/PetroVoronov/telegram-menu-from-structure/compare/v1.3.4...v1.3.5) (2024-10-09)
+
+### Bug Fixes
+
+* **MenuButton:** improve handling of text prompts - extra new line is removed ([7f9a0c7](https://github.com/PetroVoronov/telegram-menu-from-structure/commit/7f9a0c7988b95db3a5c4dc73eec634d743de9f5b))
+* update package.json to require Node.js 18 or higher due to `cloneStructure` dependency ([b781a82](https://github.com/PetroVoronov/telegram-menu-from-structure/commit/b781a82b343d2f36b65b469a89a5d846aaaa85bd))
+
+### Code Refactoring
+
+* **examples:** apply changes in `save`, `onSetBefore` and `onSetAfter` to the examples (missed previously) ([7f9a0c7](https://github.com/PetroVoronov/telegram-menu-from-structure/commit/7f9a0c7988b95db3a5c4dc73eec634d743de9f5b))
+* **examples:** rename example projects and update dependencies ([b781a82](https://github.com/PetroVoronov/telegram-menu-from-structure/commit/b781a82b343d2f36b65b469a89a5d846aaaa85bd))
+
+### Build System
+
+* **deps-dev:** bump globals from 15.10.0 to 15.11.0 ([0e93c2c](https://github.com/PetroVoronov/telegram-menu-from-structure/commit/0e93c2cc7bd8745857444ac3111e23f5c57b62f9))
+
+### Continuous Integration
+
+* add GitHub Actions workflow for testing and issue management ([e978ab3](https://github.com/PetroVoronov/telegram-menu-from-structure/commit/e978ab32065f79dcbf5ec81465a38693ec12b7a6))
+* allow tests to continue on error in workflow ([7780bf6](https://github.com/PetroVoronov/telegram-menu-from-structure/commit/7780bf6988ee73641174f01ca18e4365c7ea919a))
+* Check new workflow `Test and Manage Issues` ([13e53ae](https://github.com/PetroVoronov/telegram-menu-from-structure/commit/13e53ae5c6e1eeb8475db77199cb65989951ea6f))
+* specify exact minimal Node.js version in workflow configuration ([0900a72](https://github.com/PetroVoronov/telegram-menu-from-structure/commit/0900a72bf5c77f73e19a253a57fca309c3b40525))
+* update GitHub API method for issue creation in workflow ([ff1cefb](https://github.com/PetroVoronov/telegram-menu-from-structure/commit/ff1cefb8f4f25d79adc3c57ecf49cfdfd7758f3a))
+* update Node.js version handling and improve issue management in workflow ([b781a82](https://github.com/PetroVoronov/telegram-menu-from-structure/commit/b781a82b343d2f36b65b469a89a5d846aaaa85bd))
+* update permissions for GitHub Actions workflow to manage issues ([ed35d01](https://github.com/PetroVoronov/telegram-menu-from-structure/commit/ed35d014e6a1c75c5df2e3fb483dc7ef8bf844bb))
+* update release workflow to run tests and create issue on failure ([c4c7713](https://github.com/PetroVoronov/telegram-menu-from-structure/commit/c4c7713da616f494ba52558d5999d2051efb3901))
+* upgrade github-script action to version 7 and add comment on issue closure ([d968e25](https://github.com/PetroVoronov/telegram-menu-from-structure/commit/d968e259c6b45b0b2011c730adebee31949c2cf0))
+
+### Tests
+
+* adjust test expectations for menu item handling ([b781a82](https://github.com/PetroVoronov/telegram-menu-from-structure/commit/b781a82b343d2f36b65b469a89a5d846aaaa85bd))
+* correct capitalization in main menu message expectation ([ec5a634](https://github.com/PetroVoronov/telegram-menu-from-structure/commit/ec5a634b67d2018848554ab2e398a3b11f158805))
+* correct capitalization in main menu message expectation to test workflow ([20baa70](https://github.com/PetroVoronov/telegram-menu-from-structure/commit/20baa70cb107386a0a7e4e634203d3376687cc0b))
+* Significantly improved test for the `index.js` - the logic from `examples` was taken and applied to really check the functionality of the Menu ([7f9a0c7](https://github.com/PetroVoronov/telegram-menu-from-structure/commit/7f9a0c7988b95db3a5c4dc73eec634d743de9f5b))
+
 ## [1.3.4](https://github.com/PetroVoronov/telegram-menu-from-structure/compare/v1.3.3...v1.3.4) (2024-10-07)
 
 ### Continuous Integration
