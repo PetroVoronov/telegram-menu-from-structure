@@ -2,23 +2,19 @@
 
 ## [1.3.5](https://github.com/PetroVoronov/telegram-menu-from-structure/compare/v1.3.4...v1.3.5) (2024-10-09)
 
-
 ### Bug Fixes
 
 * **MenuButton:** improve handling of text prompts - extra new line is removed ([7f9a0c7](https://github.com/PetroVoronov/telegram-menu-from-structure/commit/7f9a0c7988b95db3a5c4dc73eec634d743de9f5b))
 * update package.json to require Node.js 18 or higher due to `cloneStructure` dependency ([b781a82](https://github.com/PetroVoronov/telegram-menu-from-structure/commit/b781a82b343d2f36b65b469a89a5d846aaaa85bd))
-
 
 ### Code Refactoring
 
 * **examples:** apply changes in `save`, `onSetBefore` and `onSetAfter` to the examples (missed previously) ([7f9a0c7](https://github.com/PetroVoronov/telegram-menu-from-structure/commit/7f9a0c7988b95db3a5c4dc73eec634d743de9f5b))
 * **examples:** rename example projects and update dependencies ([b781a82](https://github.com/PetroVoronov/telegram-menu-from-structure/commit/b781a82b343d2f36b65b469a89a5d846aaaa85bd))
 
-
 ### Build System
 
 * **deps-dev:** bump globals from 15.10.0 to 15.11.0 ([0e93c2c](https://github.com/PetroVoronov/telegram-menu-from-structure/commit/0e93c2cc7bd8745857444ac3111e23f5c57b62f9))
-
 
 ### Continuous Integration
 
@@ -31,7 +27,6 @@
 * update permissions for GitHub Actions workflow to manage issues ([ed35d01](https://github.com/PetroVoronov/telegram-menu-from-structure/commit/ed35d014e6a1c75c5df2e3fb483dc7ef8bf844bb))
 * update release workflow to run tests and create issue on failure ([c4c7713](https://github.com/PetroVoronov/telegram-menu-from-structure/commit/c4c7713da616f494ba52558d5999d2051efb3901))
 * upgrade github-script action to version 7 and add comment on issue closure ([d968e25](https://github.com/PetroVoronov/telegram-menu-from-structure/commit/d968e259c6b45b0b2011c730adebee31949c2cf0))
-
 
 ### Tests
 
