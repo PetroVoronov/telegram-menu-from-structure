@@ -1,0 +1,104 @@
+name: Test and Manage Issues
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  test-and-manage-issues:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: 16
+
+    - name: Install dependencies
+      run: npm ci
+
+    - name: Get version from package.json
+      id: get_version
+      run: echo "PACKAGE_VERSION=$(node -p "require('./package.json').version")" >> $GITHUB_ENV
+
+    - name: Run tests
+      id: test
+      run: npm test
+
+    - name: Create or update issue if tests fail
+      if: ${{ steps.test.conclusion != 'success' }}
+      uses: actions/github-script@v6
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        script: |
+          const { owner, repo } = context.repo;
+          const version = process.env.PACKAGE_VERSION;
+          const issueTitle = `Test Failure for version ${version}`;
+          const issueBody = `
+            The tests failed for the latest commit under version ${version}.
+
+            **Workflow:** ${context.workflow}
+            **Job:** ${context.job}
+            **Run:** ${context.runId}
+            **Commit:** ${context.sha}
+
+            Please check the logs for more details.
+          `;
+
+          const existingIssues = await github.issues.listForRepo({
+            owner,
+            repo,
+            state: 'open',
+            labels: 'test-failure'
+          });
+
+          const issueExists = existingIssues.data.find(issue => issue.title === issueTitle);
+
+          if (issueExists) {
+            await github.issues.createComment({
+              owner,
+              repo,
+              issue_number: issueExists.number,
+              body: `New test failure detected for version ${version}. Please check the latest logs.`
+            });
+          } else {
+            await github.issues.create({
+              owner,
+              repo,
+              title: issueTitle,
+              body: issueBody,
+              labels: ['test-failure']
+            });
+          }
+
+    - name: Close issue if tests pass
+      if: ${{ steps.test.conclusion == 'success' }}
+      uses: actions/github-script@v6
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        script: |
+          const { owner, repo } = context.repo;
+          const version = process.env.PACKAGE_VERSION;
+          const issueTitle = `Test Failure for version ${version}`;
+
+          const existingIssues = await github.issues.listForRepo({
+            owner,
+            repo,
+            state: 'open',
+            labels: 'test-failure'
+          });
+
+          const issueExists = existingIssues.data.find(issue => issue.title === issueTitle);
+
+          if (issueExists) {
+            await github.issues.update({
+              owner,
+              repo,
+              issue_number: issueExists.number,
+              state: 'closed'
+            });
+          }
