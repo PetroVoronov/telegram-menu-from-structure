@@ -47,13 +47,15 @@ const getLanguages = (data, force) => {
   return languages;
 };
 
-const onLanguageChange = (currentItem, key, data, path) => {
-  logMenu('Language changed to:', data[key]);
+const onLanguageChange = (currentItem, key, path) => {
+  logMenu('Language changed to:', currentItem[key]);
   return true;
 };
-const onButtonMaxCountChange = (currentItem, key, data, path) => {
+const onButtonMaxCountChange = (currentItem, key, path) => {
   if (menuRoot !== null && menuRoot !== undefined) {
-    menuRoot.buttonsMaxCount = data?.buttonsMaxCount || 10;
+    if (typeof currentItem?.buttonsMaxCount === 'number') {
+      menuRoot.buttonsMaxCount = currentItem?.buttonsMaxCount;
+    }
   }
 };
 
@@ -94,7 +96,7 @@ const menuStructure = {
     configuration: {
       type: 'object',
       label: 'Configuration',
-      save: () => logMenu('Saving configuration. Data:', JSON.stringify(data)),
+      save: (data) => logMenu('Saving configuration. Data:', JSON.stringify(data)),
       structure: {
         itemContent: {
           language: {
@@ -131,7 +133,7 @@ const menuStructure = {
     items: {
       type: 'array',
       label: 'Items',
-      save: () => logMenu('Saving items. Data:', JSON.stringify(data)),
+      save: (data) => logMenu('Saving items. Data:', JSON.stringify(data)),
       structure: {
         primaryId: (data, isShort = false) => `${data.label} ${data.enabled ? '✅' : '❌'}`,
         label: 'Item',
@@ -152,11 +154,9 @@ const menuStructure = {
             default: false,
             onSetBefore: (currentItem, key, data, path) => {
               logMenu(
-                `onSetBefore: currentItem: ${JSON.stringify(currentItem)}, key: ${key}, data: ${JSON.stringify(
-                  data,
-                )}, path: ${path}`,
+                `onSetBefore: currentItem: ${JSON.stringify(currentItem)}, key: ${key}, data: ${JSON.stringify(data)}, path: ${path}`,
               );
-              if (data.label !== undefined && data.type !== undefined || currentItem[key] === true) {
+              if ((currentItem.label !== undefined && currentItem.type !== undefined) || data === false) {
                 return true;
               } else {
                 logMenu('Item is not ready for enabling');

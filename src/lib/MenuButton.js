@@ -123,7 +123,11 @@ class MenuButtonInputText extends MenuButton {
     }
     const text = this.getPrompt();
     if (text) {
-      result += `\n${text}`;
+      if (result !== '') {
+        result += `\n${text}`;
+      } else {
+        result = text;
+      }
     }
     return result;
   }
@@ -341,7 +345,7 @@ class MenuButtonListTyped extends MenuButton {
     if (this.holder !== null) {
       const value = this.holder.getData(this.command);
       this.log('debug', `label: ${result}, command: ${this.command}, value: ${stringify(value)}`);
-      if (value !== null && this.list !== null && this.list.has(value)) {
+      if (value !== null && this.list instanceof Map && this.list.has(value)) {
         result = this.list.get(value);
       }
     }
@@ -359,7 +363,7 @@ class MenuButtonListTyped extends MenuButton {
 
     await this.updateList();
 
-    const list = Array.from(this.list);
+    const list = this.list instanceof Map ? Array.from(this.list) : [];
     const listLength = list.length;
 
     if (force === true || nestedCount !== listLength) {
