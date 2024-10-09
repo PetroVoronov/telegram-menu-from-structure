@@ -16,7 +16,7 @@ jobs:
     - name: Set up Node.js
       uses: actions/setup-node@v4
       with:
-        node-version: 16
+        node-version-file: 'package.json'
 
     - name: Install dependencies
       run: npm ci
@@ -26,12 +26,11 @@ jobs:
       run: echo "PACKAGE_VERSION=$(node -p "require('./package.json').version")" >> $GITHUB_ENV
 
     - name: Run tests
-      continue-on-error: true
       id: test
       run: npm test
 
     - name: Create or update issue if tests fail
-      if: ${{ steps.test.conclusion != 'success' }}
+      if: ${{ failure() &&  steps.test.conclusion != 'success' }}
       uses: actions/github-script@v6
       with:
         github-token: ${{ secrets.GITHUB_TOKEN }}
@@ -50,7 +49,7 @@ jobs:
             Please check the logs for more details.
           `;
 
-          const existingIssues = await github.issues.listForRepo({
+          const existingIssues = await github.rest.issues.listForRepo({
             owner,
             repo,
             state: 'open',
@@ -60,7 +59,7 @@ jobs:
           const issueExists = existingIssues.data.find(issue => issue.title === issueTitle);
 
           if (issueExists) {
-            await github.issues.createComment({
+            await github.rest.issues.createComment({
               owner,
               repo,
               issue_number: issueExists.number,
@@ -86,7 +85,7 @@ jobs:
           const version = process.env.PACKAGE_VERSION;
           const issueTitle = `Test Failure for version ${version}`;
 
-          const existingIssues = await github.issues.listForRepo({
+          const existingIssues = await github.rest.issues.listForRepo({
             owner,
             repo,
             state: 'open',
@@ -96,7 +95,7 @@ jobs:
           const issueExists = existingIssues.data.find(issue => issue.title === issueTitle);
 
           if (issueExists) {
-            await github.issues.update({
+            await github.rest.issues.update({
               owner,
               repo,
               issue_number: issueExists.number,

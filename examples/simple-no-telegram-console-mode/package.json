@@ -1,5 +1,5 @@
 {
-    "name": "simple-no-telegram-console-mode",
+    "name": "structured-menu-example-simple-no-telegram-console-mode",
     "main": "menu.js",
     "scripts": {
         "start": "node menu.js",
@@ -7,6 +7,6 @@
     },
     "dependencies": {
         "readline-sync": "^1.4.10",
-        "telegram-menu-from-structure": "^1.0.2"
+        "telegram-menu-from-structure": "^1.3.4"
     }
 }
