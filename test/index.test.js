@@ -277,7 +277,7 @@ describe('MenuItemRoot Menu Manage', () => {
       [{label: 'Exit', command: '/exit'}],
     ];
 
-    expect(mockSendMessage).toHaveBeenCalledWith(handler, 'This is the Main menu', expectedButtons);
+    expect(mockSendMessage).toHaveBeenCalledWith(handler, 'This is the main menu', expectedButtons);
   });
 
   test('should process /configuration command', async () => {
