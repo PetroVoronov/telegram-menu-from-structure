@@ -32,7 +32,8 @@ jobs:
     -
       name: Get version from package.json
       id: get_version
-      run: echo "PACKAGE_VERSION=$(node -p "require('./package.json').version")" >> $GITHUB_ENV
+      run: |
+        echo "PACKAGE_VERSION=$(node -p "require('./package.json').version")" >> $GITHUB_ENV
 
     -
       name: Run tests
@@ -52,7 +53,6 @@ jobs:
     - name: Check URL
       if: failure() || success()
       run: |
-        echo "Check URL is ${{ fromJSON( steps.test-results.outputs.json ).check_url }}"
         echo "CHECK_URL=${{ fromJSON( steps.test-results.outputs.json ).check_url }}" >> $GITHUB_ENV
 
     -
