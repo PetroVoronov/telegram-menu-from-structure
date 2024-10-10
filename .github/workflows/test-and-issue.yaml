@@ -42,11 +42,18 @@ jobs:
     -
       name: Publish Test Results
       uses: EnricoMi/publish-unit-test-result-action@v2
+      id: test-results
       if: failure() || success()
       with:
         check_name: "Test Results (${{ github.event.workflow_run.event || github.event_name }})"
         files: "test-results/**/*.xml"
         comment_mode: "off"
+
+    - name: Check URL
+      if: failure() || success()
+      run: |
+        echo "Check URL is ${{ fromJSON( steps.test-results.outputs.json ).check_url }}"
+        echo "CHECK_URL=${{ fromJSON( steps.test-results.outputs.json ).check_url }}" >> $GITHUB_ENV
 
     -
       name: Create or update issue if tests fail
@@ -56,6 +63,7 @@ jobs:
         script: |
           const { owner, repo } = context.repo;
           const version = process.env.PACKAGE_VERSION;
+          const checkUrl = process.env.CHECK_URL;
           const issueTitle = `Test Failure for version ${version}`;
           const issueBody = `
             The tests failed for the latest commit under version ${version}.
@@ -65,7 +73,7 @@ jobs:
             **Run:** ${context.runId}
             **Commit:** ${context.sha}
 
-            Please check the logs for more details.
+            Please check the [Test results](${checkUrl}) for more details.
           `;
 
           const existingIssues = await github.rest.issues.listForRepo({
@@ -82,7 +90,7 @@ jobs:
               owner,
               repo,
               issue_number: issueExists.number,
-              body: `New test failure detected for version ${version}. Please check the latest logs.`
+              body: `New test failure detected for version ${version}. Please check the latest [Test results](${checkUrl}) for more details.`
             });
           } else {
             await github.rest.issues.create({
