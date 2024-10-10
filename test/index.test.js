@@ -419,7 +419,7 @@ describe('MenuItemRoot Menu Manage', () => {
       expectedButtonsOnEdit,
     );
 
-    expect(mockSendMessage).toHaveBeenNthCalledWith(2, handler, 'Item for example: "Test label ❌"', expectedButtonsAfterEdit);
+    expect(mockSendMessage).toHaveBeenNthCalledWith(2, handler, ' Item for example: "Test label ❌"', expectedButtonsAfterEdit);
   });
 
   test('should process /items#0?enabled command', async () => {
