@@ -2,7 +2,6 @@
 
 ## [1.3.6](https://github.com/PetroVoronov/telegram-menu-from-structure/compare/v1.3.5...v1.3.6) (2024-10-10)
 
-
 ### Continuous Integration
 
 * Add error to the test, to check the workflow ([8bf6f6d](https://github.com/PetroVoronov/telegram-menu-from-structure/commit/8bf6f6da9fc4ca448b4bd18990933a5c2d3dcab1))
