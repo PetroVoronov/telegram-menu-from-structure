@@ -1,5 +1,15 @@
 # Changelog
 
+## [1.3.6](https://github.com/PetroVoronov/telegram-menu-from-structure/compare/v1.3.5...v1.3.6) (2024-10-10)
+
+### Continuous Integration
+
+* Add error to the test, to check the workflow ([8bf6f6d](https://github.com/PetroVoronov/telegram-menu-from-structure/commit/8bf6f6da9fc4ca448b4bd18990933a5c2d3dcab1))
+* enhance release-please workflow with improved test result publishing and failure notifications ([ef4260c](https://github.com/PetroVoronov/telegram-menu-from-structure/commit/ef4260c04723654e86dfe1b8907c71e1b7acbc01))
+* enhance test failure notifications with direct links to test results ([b9d3b1c](https://github.com/PetroVoronov/telegram-menu-from-structure/commit/b9d3b1c30845e734296446b3ca0ce3ddf8b9277d))
+* enhance test workflow and add JUnit reporting ([919ab31](https://github.com/PetroVoronov/telegram-menu-from-structure/commit/919ab316f53e71eb3af30ad39fd0e8e0a02830e4))
+* improve test workflow by refining environment variable setup and correcting test expectation ([abe5e90](https://github.com/PetroVoronov/telegram-menu-from-structure/commit/abe5e906cce368ff366d287fd08a3b5f963d6e3b))
+
 ## [1.3.5](https://github.com/PetroVoronov/telegram-menu-from-structure/compare/v1.3.4...v1.3.5) (2024-10-09)
 
 ### Bug Fixes
