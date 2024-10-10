@@ -134,3 +134,6 @@ dist
 
 #examples
 examples/**/package-lock.json
+
+# Tests results directory
+test-results

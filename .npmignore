@@ -9,3 +9,12 @@ node_modules
 
 # Ignore any files with the .ts extension
 **/*.ts
+
+# Ignore any files with the .map extension
+**/*.map
+
+# Ignore any files with the .log extension
+**/*.log
+
+#  Ignore tests results directory
+test-results

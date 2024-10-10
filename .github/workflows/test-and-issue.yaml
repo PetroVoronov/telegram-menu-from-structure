@@ -8,32 +8,48 @@ on:
 permissions:
   contents: read
   issues: write
+  checks: write
 
 jobs:
   test-and-manage-issues:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout code
+    -
+      name: Checkout code
       uses: actions/checkout@v4
 
-    - name: Set up Node.js
+    -
+      name: Set up Node.js
       uses: actions/setup-node@v4
       with:
         node-version: 18
 
-    - name: Install dependencies
+    -
+      name: Install dependencies
       run: npm ci
 
-    - name: Get version from package.json
+    -
+      name: Get version from package.json
       id: get_version
       run: echo "PACKAGE_VERSION=$(node -p "require('./package.json').version")" >> $GITHUB_ENV
 
-    - name: Run tests
+    -
+      name: Run tests
       id: test
-      run: npm test
+      run: npm test -- --ci
 
-    - name: Create or update issue if tests fail
+    -
+      name: Publish Test Results
+      uses: EnricoMi/publish-unit-test-result-action@v2
+      if: failure() || success()
+      with:
+        check_name: "Test Results (${{ github.event.workflow_run.event || github.event_name }})"
+        files: "test-results/**/*.xml"
+        comment_mode: "off"
+
+    -
+      name: Create or update issue if tests fail
       if: ${{ failure() &&  steps.test.conclusion != 'success' }}
       uses: actions/github-script@v7
       with:
@@ -78,7 +94,8 @@ jobs:
             });
           }
 
-    - name: Close issue if tests pass
+    -
+      name: Close issue if tests pass
       if: ${{ steps.test.conclusion == 'success' }}
       uses: actions/github-script@v7
       with:
