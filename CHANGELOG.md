@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.3.7](https://github.com/PetroVoronov/telegram-menu-from-structure/compare/v1.3.6...v1.3.7) (2024-10-16)
+
+
+### Build System
+
+* **deps-dev:** bump @babel/core from 7.25.7 to 7.25.8 ([798d2cf](https://github.com/PetroVoronov/telegram-menu-from-structure/commit/798d2cf859432083072a0082029035385e61ee3a))
+* **deps-dev:** bump @babel/eslint-parser from 7.25.7 to 7.25.8 ([7408dda](https://github.com/PetroVoronov/telegram-menu-from-structure/commit/7408dda833fb50c4e61d101072205edeaf075dbf))
+
+
+### Continuous Integration
+
+* update permissions in release-please workflow to include checks ([218e71b](https://github.com/PetroVoronov/telegram-menu-from-structure/commit/218e71b070ff43aaf528705185230c9d50f8158b))
+
 ## [1.3.6](https://github.com/PetroVoronov/telegram-menu-from-structure/compare/v1.3.5...v1.3.6) (2024-10-10)
 
 ### Continuous Integration
