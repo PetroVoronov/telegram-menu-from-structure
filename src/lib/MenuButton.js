@@ -1,6 +1,5 @@
-/* eslint-disable sonarjs/public-static-readonly */
 const stringify = require('json-stringify-safe');
-const {MenuItem, menuDefaults} = require('./MenuItem');
+const {MenuItem} = require('./MenuItem');
 
 class MenuButton extends MenuItem {
   /**
