@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.3.9](https://github.com/PetroVoronov/telegram-menu-from-structure/compare/v1.3.8...v1.3.9) (2026-10-19)
+
+### Build System
+
+* **deps-dev:** override vulnerable markdownlint-cli2 dependencies ([7bf70a9](https://github.com/PetroVoronov/telegram-menu-from-structure/commit/7bf70a940a7a03432aecc34fc0e566b3f4b8b255))
+* **deps-dev:** override vulnerable markdownlint-cli2 dependencies ([2f60966](https://github.com/PetroVoronov/telegram-menu-from-structure/commit/2f6096693da651efd37c4d21fb091e947521bc1a))
+
 ## [1.3.8](https://github.com/PetroVoronov/telegram-menu-from-structure/compare/v1.3.7...v1.3.8) (2026-10-19)
 
 ### Bug Fixes
