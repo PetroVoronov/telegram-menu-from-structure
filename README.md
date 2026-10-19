@@ -686,7 +686,7 @@ This example is a simple Telegram bot example that demonstrates how to module wi
 
 **You can test this module only if you have a real Telegram bot token.**
 
-Instructions how to get the token and create a bot can be found [here](https://core.telegram.org/bots/tutorial#obtain-your-bot-token).
+Instructions how to get the token and create a bot can be found in the [Telegram bot tutorial](https://core.telegram.org/bots/tutorial#obtain-your-bot-token).
 
 To run the example, use the following command:
 

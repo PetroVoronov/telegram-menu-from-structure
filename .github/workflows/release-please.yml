@@ -6,17 +6,18 @@ on:
 permissions:
   contents: write
   pull-requests: write
-  issues: write
-  checks: write
 
 name: release-please
 
 jobs:
   release-please:
     runs-on: ubuntu-latest
+    outputs:
+      release_created: ${{ steps.release.outputs.release_created }}
+      tag_name: ${{ steps.release.outputs.tag_name }}
     steps:
       -
-        uses: googleapis/release-please-action@v4
+        uses: googleapis/release-please-action@v5
         id: release
         with:
           # this assumes that you have created a personal access token
@@ -27,16 +28,9 @@ jobs:
           config-file: release-please-config.json
           # optional. customize path to .release-please-manifest.json
           manifest-file: .release-please-manifest.json
-      # The logic below handles the npm publication:
 
       -
-        uses: actions/checkout@v4
-        # these if statements ensure that a publication only occurs when
-        # a new release is created:
-        if: ${{ steps.release.outputs.release_created }}
-
-      -
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         # this step checks out the PR branch that was created by release-please
         if: ${{ steps.release.outputs.pr }}
         with:
@@ -44,32 +38,78 @@ jobs:
           token: ${{ secrets.MY_RELEASE_PLEASE_TOKEN }}
 
       -
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v7
+        if: ${{ steps.release.outputs.pr }}
         with:
-          node-version: 18
-          registry-url: 'https://registry.npmjs.org'
+          node-version: 24
 
       -
         run: npm ci
-        if: ${{ steps.release.outputs.release_created }}
+        if: ${{ steps.release.outputs.pr }}
+
+      -
+        name: Run CHANGELOG.md through markdownlint-cli2
+        if: ${{ steps.release.outputs.pr }}
+        run: npx markdownlint-cli2 CHANGELOG.md --fix
+
+      -
+        name: Commit and push
+        if: ${{ steps.release.outputs.pr }}
+        uses: EndBug/add-and-commit@v11
+        with:
+          add: 'CHANGELOG.md'
+          message: 'chore: run CHANGELOG.md through markdownlint-cli2'
+          default_author: user_info
+
+  # npm publication via trusted publishing (OIDC), runs only when a new release is created.
+  # The trusted publisher on npmjs.com has to point to this workflow file: release-please.yml
+  publish:
+    needs: release-please
+    if: ${{ needs.release-please.outputs.release_created == 'true' }}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+      checks: write
+      issues: write
+    steps:
+      -
+        uses: actions/checkout@v7
+        with:
+          ref: ${{ needs.release-please.outputs.tag_name }}
+
+      -
+        uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          registry-url: 'https://registry.npmjs.org'
+          package-manager-cache: false
+
+      -
+        name: Ensure npm supports trusted publishing (11.5.1 or later)
+        run: |
+          npm --version
+          node -e "const [major, minor, patch] = process.argv[1].split('.').map(Number); process.exit(major > 11 || (major === 11 && (minor > 5 || (minor === 5 && patch >= 1))) ? 0 : 1)" "$(npm --version)" \
+            || npm install -g npm@^11.5.1
+          npm --version
+
+      -
+        run: npm ci
 
       -
         name: Run tests
         run: npm test -- --ci
-        if: ${{ steps.release.outputs.release_created }}
         id: test
 
       -
         run: npm publish
-        env:
-          NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
-        if: ${{ steps.release.outputs.release_created && steps.test.conclusion == 'success' }}
+        if: ${{ steps.test.conclusion == 'success' }}
 
       -
         name: Publish Test Results
         uses: EnricoMi/publish-unit-test-result-action@v2
         id: test-results
-        if: ${{ steps.release.outputs.release_created && ( failure() || success() ) }}
+        if: ${{ failure() || success() }}
         with:
           check_name: "Test Results on Release (${{ github.event.workflow_run.event || github.event_name }})"
           files: "test-results/**/*.xml"
@@ -77,18 +117,20 @@ jobs:
 
       -
         name: Check URL
-        if: ${{ failure()  && steps.release.outputs.release_created && steps.test.conclusion != 'success'  }}
+        if: ${{ failure() && steps.test.conclusion != 'success' }}
         run: |
           echo "CHECK_URL=${{ fromJSON( steps.test-results.outputs.json ).check_url }}" >> $GITHUB_ENV
 
       -
         name: Create issue if tests fail
-        if: ${{ failure() && steps.release.outputs.release_created && steps.test.conclusion != 'success' }}
-        uses: actions/github-script@v7
+        if: ${{ failure() && steps.test.conclusion != 'success' }}
+        uses: actions/github-script@v9
+        env:
+          RELEASE_VERSION: ${{ needs.release-please.outputs.tag_name }}
         with:
           script: |
             const { owner, repo } = context.repo;
-            const releaseVersion = context.payload.release.tag_name;
+            const releaseVersion = process.env.RELEASE_VERSION;
             const checkUrl = process.env.CHECK_URL;
             const issueTitle = `Test Failure in Release Workflow for version ${releaseVersion}`;
             const issueBody = `
@@ -120,17 +162,3 @@ jobs:
                 labels: ['test-failure']
               });
             }
-
-      -
-        name: Run CHANGELOG.md through markdownlint-cli2
-        if: ${{ steps.release.outputs.pr }}
-        run: npx markdownlint-cli2 CHANGELOG.md --fix
-
-      -
-        name: Commit and push
-        if: ${{ steps.release.outputs.pr }}
-        uses: EndBug/add-and-commit@v9
-        with:
-          add: 'CHANGELOG.md'
-          message: 'chore: run CHANGELOG.md through markdownlint-cli2'
-          default_author: user_info

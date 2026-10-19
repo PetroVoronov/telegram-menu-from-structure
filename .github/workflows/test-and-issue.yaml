@@ -17,13 +17,13 @@ jobs:
     steps:
       -
         name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       -
         name: Set up Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v7
         with:
-          node-version: 18
+          node-version: 24
 
       -
         name: Install dependencies
@@ -59,7 +59,7 @@ jobs:
       -
         name: Create or update issue if tests fail
         if: ${{ failure() &&  steps.test.conclusion != 'success' }}
-        uses: actions/github-script@v7
+        uses: actions/github-script@v9
         with:
           script: |
             const { owner, repo } = context.repo;
@@ -106,7 +106,7 @@ jobs:
       -
         name: Close issue if tests pass
         if: ${{ steps.test.conclusion == 'success' }}
-        uses: actions/github-script@v7
+        uses: actions/github-script@v9
         with:
           script: |
             const { owner, repo } = context.repo;

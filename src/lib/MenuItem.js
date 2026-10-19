@@ -1,10 +1,11 @@
-/* eslint-disable sonarjs/public-static-readonly */
 /** @module menu/menu-item  **/
 
 const stringify = require('json-stringify-safe');
 const emojiRegex = require('emoji-regex');
 const {SimpleLogger} = require('./MenuLogger');
 const util = require('node:util');
+
+const emojiPattern = emojiRegex();
 
 const menuDefaults = {
   columnsMaxCount: {
@@ -89,7 +90,7 @@ class MenuItem {
     let count = 0;
     if (typeof string === 'string' && string) {
       count = string.length;
-      for (const match of string.matchAll(emojiRegex)) {
+      for (const match of string.matchAll(emojiPattern)) {
         const emoji = match[0];
         count += 2 - emoji.length; // count emoji as 2 visible characters, despite how many items it contains
       }

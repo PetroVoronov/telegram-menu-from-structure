@@ -463,7 +463,6 @@ class MenuItemStructured extends MenuItem {
           indexCurrent = index;
           switch (structureItem.sourceType) {
             case 'input': {
-              // eslint-disable-next-line sonarjs/no-nested-switch
               switch (structureItem.type) {
                 case 'string': {
                   item = new MenuButtonInputText(label, command, text, template, group);
@@ -514,7 +513,6 @@ class MenuItemStructured extends MenuItem {
               break;
             }
             default: {
-              // eslint-disable-next-line sonarjs/no-nested-switch
               switch (structureItem.type) {
                 case 'boolean': {
                   item = new MenuButtonBoolean(label, command, text, group);

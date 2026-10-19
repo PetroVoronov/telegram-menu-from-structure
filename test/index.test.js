@@ -422,7 +422,7 @@ describe('MenuItemRoot Menu Manage', () => {
     expect(mockSendMessage).toHaveBeenNthCalledWith(2, handler, 'Item for example: "Test label ❌"', expectedButtonsAfterEdit);
   });
 
-  test('should process /items#0?enabled command', async () => {
+  test('should not enable item without type on /items#0?enabled command', async () => {
     const handler = 'user';
     const userId = 'test';
     const messageId = 100;
@@ -487,7 +487,7 @@ describe('MenuItemRoot Menu Manage', () => {
     expect(mockSendMessage).toHaveBeenCalledWith(handler, 'Item for example: "Test label ❌"', expectedButtons);
   });
 
-  test('should process /items#0?enabled command', async () => {
+  test('should enable item with type on /items#0?enabled command', async () => {
     const handler = 'user';
     const userId = 'test';
     const messageId = 100;

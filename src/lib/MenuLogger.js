@@ -1,9 +1,6 @@
 class SimpleLogger {
-  // eslint-disable-next-line sonarjs/public-static-readonly
   static levels = ['debug', 'info', 'warn', 'error'];
-  // eslint-disable-next-line sonarjs/public-static-readonly
   static canLog = (level, targetLevel) => SimpleLogger.levels.indexOf(level) >= SimpleLogger.levels.indexOf(targetLevel);
-  // eslint-disable-next-line sonarjs/public-static-readonly
   static acceptableLevel = (level) => SimpleLogger.levels.includes(level);
 
   constructor(level) {

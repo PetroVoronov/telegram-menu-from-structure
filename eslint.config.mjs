@@ -1,24 +1,31 @@
 import globals from 'globals';
 import eslintConfigPrettier from 'eslint-config-prettier';
 import sonarjs from 'eslint-plugin-sonarjs';
-import babelParser from '@babel/eslint-parser';
 
 export default [
   sonarjs.configs.recommended,
   {
-    ignores: ['eslint.config.mjs', 'node_modules/'],
+    ignores: ['eslint.config.mjs', 'node_modules/', 'dist/', 'coverage/', 'examples/**/node_modules/'],
     languageOptions: {
       globals: {
         ...Object.fromEntries(Object.entries(globals.browser).map(([key]) => [key, 'off'])),
         ...globals.node,
       },
 
-      ecmaVersion: 2021,
-      parser: babelParser,
+      ecmaVersion: 'latest',
+      sourceType: 'commonjs',
     },
 
     rules: {
       'sonarjs/cognitive-complexity': 'off',
+    },
+  },
+  {
+    files: ['test/**/*.js'],
+    languageOptions: {
+      globals: {
+        ...globals.jest,
+      },
     },
   },
   eslintConfigPrettier

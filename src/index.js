@@ -3,7 +3,6 @@ const {MenuItemStructured} = require('./lib/MenuItemStructured');
 const {SimpleLogger} = require('./lib/MenuLogger');
 const pkgVersion = require('../package.json').version;
 
-let log = new SimpleLogger('info');
 class MenuItemRoot extends MenuItem {
   /**
    * @param {string} label - The label of the item
