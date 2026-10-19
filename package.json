@@ -66,5 +66,9 @@
   },
   "engines": {
     "node": ">= 18.0.0"
+  },
+  "overrides": {
+    "smol-toml": "^1.9.1",
+    "katex": "^0.18.2"
   }
 }
