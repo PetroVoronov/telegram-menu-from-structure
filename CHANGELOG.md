@@ -2,22 +2,18 @@
 
 ## [1.3.8](https://github.com/PetroVoronov/telegram-menu-from-structure/compare/v1.3.7...v1.3.8) (2026-10-19)
 
-
 ### Bug Fixes
 
 * **MenuItem:** count emoji width with the emoji-regex pattern ([13aec16](https://github.com/PetroVoronov/telegram-menu-from-structure/commit/13aec169262bc0d1c0efa156a46a62cdd2faa79f))
 * **MenuItem:** count emoji width with the emoji-regex pattern; npm trusted publishing ([e063ad2](https://github.com/PetroVoronov/telegram-menu-from-structure/commit/e063ad29c257e43e9babd9d064429a80c58cec1e))
 
-
 ### Code Refactoring
 
 * **index:** remove unused code ([13aec16](https://github.com/PetroVoronov/telegram-menu-from-structure/commit/13aec169262bc0d1c0efa156a46a62cdd2faa79f))
 
-
 ### Build System
 
 * **deps-dev:** update tooling, drop Babel ESLint parser ([13aec16](https://github.com/PetroVoronov/telegram-menu-from-structure/commit/13aec169262bc0d1c0efa156a46a62cdd2faa79f))
-
 
 ### Continuous Integration
 
@@ -25,11 +21,9 @@
 * **release-please:** publish to npm via trusted publishing ([13aec16](https://github.com/PetroVoronov/telegram-menu-from-structure/commit/13aec169262bc0d1c0efa156a46a62cdd2faa79f))
 * **workflows:** test on pull requests, update actions ([13aec16](https://github.com/PetroVoronov/telegram-menu-from-structure/commit/13aec169262bc0d1c0efa156a46a62cdd2faa79f))
 
-
 ### Documentation
 
 * **readme:** use descriptive link text ([13aec16](https://github.com/PetroVoronov/telegram-menu-from-structure/commit/13aec169262bc0d1c0efa156a46a62cdd2faa79f))
-
 
 ### Tests
 
